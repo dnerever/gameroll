@@ -14,4 +14,8 @@ Our application is focused for gamers or people who are looking to get into gami
 
 **Prerequisites to run the application**
 
-****
+**How to run the application locally**
+
+**How to run tests**
+
+**Link to application**
