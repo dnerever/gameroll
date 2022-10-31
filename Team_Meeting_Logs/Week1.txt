@@ -1,0 +1,21 @@
+Notes from week 1 TA meeting(10/31):
+How to divide up work: 
+Spilt things in terms of features 
+Don’t split just front end/back end etc
+Finishing features should be of utmost importance!!!
+One week have one group do back end and one group do front end and then the next week swap 
+Try to split things into groups of 2ish per feature(pair coding)
+
+These meetings: 
+Look at the project guide for what is expected/what we will go over with the TA
+Change log: all things worked on during the week, linked in github
+Plan for the following week:
+All of the things that are going to be done
+Each person has at least one thing they are working on for the following week
+(can have more per person but not less)
+Did everything get done like it was said it would 
+Use markdown on github to take these notes (for next time)
+Consistent commits → required to make commits to the repository at least 5 days out of the week to get full credit for commits 
+Don’t have to make huge commits, a few lines will do 
+5 commits per person per week 
+Commits need to show/say what you did, not just uploaded files
