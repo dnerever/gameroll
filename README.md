@@ -11,12 +11,21 @@ Our application is focused for gamers or people who are looking to get into gami
 - Joseph Pleasant, Keith Bates, Kimberly Marthias, Emma Lowery, Harrison Pena, Kevin McMahon 
 
 **Technology Stack**
+
 - For this website we will be using HTML, CSS, JavaScript, SQL, nodeJS and EJS in terms of programming langauges. Additonally we will use a Postgres database and then Docker to be the serves for the website.
+
 **Prerequisites to run the application**
+
 - In order to run the application, you must have Docker installed.
+
 **How to run the application locally**
+
 - To open the website locally, you will need to open a browser, and type in "localhost:3000". From there you will be brought to the home page.
+
 **How to run tests**
+
 N/A - to be added at a later date
+
 **Link to application**
+
 N/A - to be added at a later date
