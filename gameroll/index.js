@@ -1,3 +1,13 @@
+const express = require('express');
+const app = express();
+const pgp = require('pg-promise')();
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const axios = require('axios');
+const { render } = require('ejs');
+
+
 // database configuration
 const dbConfig = {
     host: 'db',
@@ -18,3 +28,12 @@ const dbConfig = {
     .catch(error => {
       console.log('ERROR:', error.message || error);
     });
+
+
+
+
+
+
+
+    app.listen(3000);
+    console.log("Server is listening on port 3000");
