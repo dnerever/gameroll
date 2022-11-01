@@ -19,3 +19,11 @@ Consistent commits → required to make commits to the repository at least 5 day
 Don’t have to make huge commits, a few lines will do 
 5 commits per person per week 
 Commits need to show/say what you did, not just uploaded files
+
+
+Plan for next week: Done by (11/7)
+Login/Logout page (Keith and Kimberly)
+Register page (Kevin and Joseph)
+Rough outline of homepage: (Harrison and Emma)
+-basic view of what it looks like 
+-nav bar
