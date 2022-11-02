@@ -29,7 +29,9 @@ const dbConfig = {
       console.log('ERROR:', error.message || error);
     });
 
-
+  app.get('/register', (req, res) => {
+    res.render('pages/register');
+  });
 
 
 
