@@ -62,19 +62,19 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    // const name = req.body.username;
-    // const hash = await bcrypt.hash(req.body.password, 10);
-    // const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
-    // db.any(query, [
-    //   req.body.username,
-    //   hash,
-    // ])
-    // .then(function (rows) {
-    //     res.redirect('/login');
-    //   })
-    // .catch(function (err) {
-    //     res.redirect('/register');
-    // });
+    const name = req.body.username;
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
+    db.any(query, [
+      req.body.username,
+      hash,
+    ])
+    .then(function (rows) {
+        res.redirect('/login');
+      })
+    .catch(function (err) {
+        res.redirect('/register');
+    });
   });
 
 // 7. GET /login
