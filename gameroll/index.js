@@ -51,8 +51,12 @@ app.use(
 
 // 4. Get /
 app.get('/', (req, res) =>{
-    res.redirect('pages/home'); //this will call the /anotherRoute route in the API
+    res.render("pages/home"); //this will call the /anotherRoute route in the API
   });
+
+  // app.get('/home', (req, res) =>{
+  //   res.redirect('pages/home'); //this will call the /anotherRoute route in the API
+  // });
   
 
 // 5. GET /register
@@ -64,19 +68,19 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    // const name = req.body.username;
-    // const hash = await bcrypt.hash(req.body.password, 10);
-    // const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
-    // db.any(query, [
-    //   req.body.username,
-    //   hash,
-    // ])
-    // .then(function (rows) {
-    //     res.redirect('/login');
-    //   })
-    // .catch(function (err) {
-    //     res.redirect('/register');
-    // });
+    const name = req.body.username;
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
+    db.any(query, [
+      req.body.username,
+      hash,
+    ])
+    .then(function (rows) {
+        res.redirect('/login');
+      })
+    .catch(function (err) {
+        res.redirect('/register');
+    });
   });
 
 // 7. GET /login
@@ -118,16 +122,16 @@ app.post('/login', async(req, res) => {
 
 // 9. Authentication middleware
 
-const auth = (req, res, next) => {
-    if (!req.session.user) {
-      // Default to register page.
-      return res.redirect('/register');
-    }
-    next();
-  };
+// const auth = (req, res, next) => {
+//     if (!req.session.user) {
+//       // Default to register page.
+//       return res.redirect('/register');
+//     }
+//     next();
+//   };
   
-  // Authentication Required
-  app.use(auth);
+//   // Authentication Required
+//   app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
