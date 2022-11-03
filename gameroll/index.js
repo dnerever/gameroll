@@ -29,10 +29,43 @@ const dbConfig = {
       console.log('ERROR:', error.message || error);
     });
 
+  
+// 3. App settings
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.json());
+
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      saveUninitialized: false,
+      resave: false,
+    })
+  );
+  
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  );
+
+// 4. Get /
+app.get('/', (req, res) =>{
+    res.redirect('pages/home'); //this will call the /anotherRoute route in the API
+  });
+
   app.get('/register', (req, res) => {
     res.render('pages/register');
   });
 
+
+  // 7. GET /login
+  app.get('/login', (req, res) => {
+    res.render('pages/login');
+  });
+
+
+  
 
 
 
