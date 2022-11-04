@@ -6,3 +6,7 @@ CREATE TABLE users(
     password VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE game2users(
+user_id SERIAL FOREIGN KEY,
+game_id SERIAL FOREIGN KEY,
+);
