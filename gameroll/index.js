@@ -135,7 +135,7 @@ app.post('/login', async(req, res) => {
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
-    res.redirect("pages/profile");
+    res.render("pages/profile");
   });
 
   // 11. GET /logout
