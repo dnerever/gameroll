@@ -51,8 +51,13 @@ app.use(
 
 // 4. Get /
 app.get('/', (req, res) =>{
-  res.redirect('pages/home'); //this will call the /anotherRoute route in the API
+  res.redirect('/home'); //this will call the /anotherRoute route in the API
 });
+
+app.get('/home', (req, res) =>{
+  res.render('pages/home'); 
+});
+
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
@@ -139,8 +144,8 @@ const auth = (req, res, next) => {
   next();
 };
 
-  // Authentication Required
-  app.use(auth);
+  // // Authentication Required
+  // app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
