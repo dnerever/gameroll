@@ -43,26 +43,20 @@ app.use(
     })
   );
   
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    })
-  );
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // 4. Get /
 app.get('/', (req, res) =>{
-    res.render("pages/home"); //this will call the /anotherRoute route in the API
-  });
+  res.redirect('pages/home'); //this will call the /anotherRoute route in the API
+});
 
-  // app.get('/home', (req, res) =>{
-  //   res.redirect('pages/home'); //this will call the /anotherRoute route in the API
-  // });
-  
-
-// 5. GET /register
 app.get('/register', (req, res) => {
-    res.render("pages/register");
-  });
+  res.render('pages/register');
+});
 
 // 6. POST /register
 // Register submission
@@ -120,18 +114,33 @@ app.post('/login', async(req, res) => {
     // }
 });
 
+
+
+app.post('/register', async (req, res) => {
+
+  // hash to be used/tested later
+  // const hash = await bcrypt.hash(req.body.password, 10);
+
+  const query = `INSERT INTO users (email, password) VALUES ($1, $2);`;
+
+  db.any(query, [
+    req.body.email,
+    req.body.passsword // change to 'hash' later when hashing passwords is implemented
+  ])
+});
+  
 // 9. Authentication middleware
 
-// const auth = (req, res, next) => {
-//     if (!req.session.user) {
-//       // Default to register page.
-//       return res.redirect('/register');
-//     }
-//     next();
-//   };
-  
-//   // Authentication Required
-//   app.use(auth);
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to register page.
+    return res.redirect('/register');
+  }
+  next();
+};
+
+  // Authentication Required
+  app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
@@ -143,6 +152,8 @@ app.get('/profile',(req, res) => {
     req.session.destroy();
     res.render('pages/logout');
   });
+
+
 
 
 app.listen(3000);
