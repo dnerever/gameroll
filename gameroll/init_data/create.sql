@@ -5,7 +5,6 @@ CREATE TABLE users(
     password VARCHAR(100) NOT NULL
 );
 
-<<<<<<< HEAD
 DROP TABLE IF EXISTS users_to_games CASCADE;
 CREATE TABLE users_to_games(
   user_id INT NOT NULL,
@@ -17,10 +16,4 @@ CREATE TABLE users_to_games(
 DROP TABLE IF EXISTS games CASCADE;
 CREATE TABLE games(
     game_id PRIMARY KEY
-=======
-DROP TABLE IF EXISTS game2users CASCADE;
-CREATE TABLE game2users(
-user_id SERIAL FOREIGN KEY,
-game_id SERIAL FOREIGN KEY,
->>>>>>> dd32bb56e8f96c38fce56a15c4753b4a81306a63
 );

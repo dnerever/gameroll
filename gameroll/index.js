@@ -51,7 +51,9 @@ app.use(
 
 // 4. Get /
 app.get('/', (req, res) =>{
-  res.redirect('/home'); //this will call the /anotherRoute route in the API
+  // res.redirect('/home'); //this will call the /anotherRoute route in the API
+  /* Changed for de-bugging purposes only - Kevin */
+  res.redirect('/register');
 });
 
 app.post('/home',(req, res) => {
@@ -92,12 +94,12 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const name = req.body.username;
+    // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
-    const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
+    const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
     db.any(query, [
-      req.body.username,
-      hash,
+      req.body.email,
+      hash
     ])
     .then(function (rows) {
         res.redirect('/login');
@@ -169,14 +171,9 @@ const auth = (req, res, next) => {
   next();
 };
 
-<<<<<<< HEAD
-// // Authentication Required
-// app.use(auth);
-=======
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
   // app.use(auth);
->>>>>>> 865259c5debc241520bd9eb1bf9f9872b722c62c
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
