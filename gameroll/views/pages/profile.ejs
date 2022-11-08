@@ -2,24 +2,25 @@
 <%- include ('../partials/menu') %>
 <div class="col"><%- include ('../partials/message') %></div>
 <main>
-    <div class="container" >
-        <h1>User Name's Profile</h1>
-            <p>Welcome User</p>
-        <h3>My Saved Games</h3>
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-            <div class="col">
-              <div class="card">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                </div>
+    <div class="container">
+      <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+          <% events.forEach(event => { %>
+          <div class="col">
+            <div class="card">
+              <img src="<%=  event.images && event.images.length ? event.images[0].url :'/295467.png' %>" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title"><%= event.name %> </h5>
+                <h6 class="card-title"> <span> Date: <%= event.dates.start.localDate%></span><br><span>Time: <%= event.dates.start.localTime%></span></h6>
               </div>
+              <a href="<%= event.url %> " class = "btn btn-primary">Book Now</a>
             </div>
           </div>
+          <% }) %> 
+  
     </div>
-</main>
-
+    </div>
+  </main>
 
 
 <%- include ('../partials/footer') %>
