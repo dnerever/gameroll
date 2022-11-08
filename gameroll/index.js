@@ -54,10 +54,35 @@ app.get('/', (req, res) =>{
   res.redirect('/home'); //this will call the /anotherRoute route in the API
 });
 
-app.get('/home', (req, res) =>{
-  res.render('pages/home'); 
+app.post('/home',(req, res) => {
+  axios({
+      url: `https://api.igdb.com/v4/games`,
+          method: 'POST',
+          dataType:'json',
+          params: {
+              "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
+              "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+              "apikey": req.session.user.api_key,
+              "keyword": "game", //you can choose any artist/event here
+              "size": 10,
+          }
+      })
+      .then(results => {
+          console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
+      // Send some parameters
+      res.render('pages/discover', {
+        results: results,
+      });
+      })
+      .catch(error => {
+      // Handle errors
+          res.render('pages/discover', {
+            results: [],
+            message: error.message || error
+          });
+          // console.log('ERROR:', error.message || error);
+      });
 });
-
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
