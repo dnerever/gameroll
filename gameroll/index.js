@@ -144,19 +144,19 @@ const auth = (req, res, next) => {
   next();
 };
 
-  // // Authentication Required
-  // app.use(auth);
+// // Authentication Required
+// app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
     res.render("pages/profile");
   });
 
-  // 11. GET /logout
-  app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/logout');
-  });
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
 
 
 
