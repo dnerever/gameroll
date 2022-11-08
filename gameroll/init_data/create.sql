@@ -1,4 +1,4 @@
-
+DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -6,6 +6,7 @@ CREATE TABLE users(
     password VARCHAR(100) NOT NULL
 );
 
+DROP TABLE IF EXISTS game2users CASCADE;
 CREATE TABLE game2users(
 user_id SERIAL FOREIGN KEY,
 game_id SERIAL FOREIGN KEY,

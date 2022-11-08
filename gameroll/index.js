@@ -144,6 +144,7 @@ const auth = (req, res, next) => {
   next();
 };
 
+// We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
   // app.use(auth);
 
