@@ -169,20 +169,25 @@ const auth = (req, res, next) => {
   next();
 };
 
+<<<<<<< HEAD
+// // Authentication Required
+// app.use(auth);
+=======
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
   // app.use(auth);
+>>>>>>> 865259c5debc241520bd9eb1bf9f9872b722c62c
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
     res.render("pages/profile");
   });
 
-  // 11. GET /logout
-  app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/logout');
-  });
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
 
 
 
