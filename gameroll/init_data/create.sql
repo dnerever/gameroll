@@ -8,12 +8,10 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS users_to_games CASCADE;
 CREATE TABLE users_to_games(
   user_id INT NOT NULL,
-  game_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (game_id) REFERENCES games_to_api (game_id)
+  game_id INT NOT NULL
 );
 
 DROP TABLE IF EXISTS games CASCADE;
 CREATE TABLE games(
-    game_id PRIMARY KEY
+    game_id INT PRIMARY KEY
 );

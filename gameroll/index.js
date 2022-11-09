@@ -94,6 +94,8 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
+    const test = await db.query("SELECT * FROM users;")
+    console.log(test)
     // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
@@ -101,12 +103,12 @@ app.post('/register', async (req, res) => {
       req.body.email,
       hash
     ])
-    .then(function (rows) {
+    .then(function (data) {
         res.redirect('/login');
-      })
+    })
     .catch(function (err) {
-        res.redirect('/register');
-    });
+        res.render('pages/register',{message:"Error"});
+    })
   });
 
 // 7. GET /login
