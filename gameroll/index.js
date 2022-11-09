@@ -177,7 +177,8 @@ app.post('/profile', (req, res) => {
       res.render('pages/profile', {game: game.data})
       })
     .catch(err => {
-        console.error(err);
+        res.render('pages/home');
+        return console.log(err);
     });
 });
 
