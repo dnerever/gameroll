@@ -8,14 +8,14 @@
         <h3>My Saved Games</h3>
       <!-- THE REST OF YOUR HTML CODE GOES HERE -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
-          <% game.forEach(games => { %>
+          <% games.forEach(game => { %>
           <div class="col">
             <div class="card">
-              <img src="<%= games.cover %> " class="card-img-top" alt="...">
+              <img src="<%= game.cover %> " class="card-img-top" alt="...">
               <div class="card-body">
-                <h5 class="card-title"><%= games.name %> </h5>
-                <h4 class ="card-body"><%= games.storyline %></h4>
-                <h3 class="card-body"> <span> Game genre: <%= games.genres%></span><br><span>Game rating: <%= game.release_dates%></span></h3>
+                <h5 class="card-title"><%= game.name %> </h5>
+                <h4 class ="card-body"><%= game.storyline %></h4>
+                <h3 class="card-body"> <span> Game genre: <%= game.genres%></span><br><span>Game rating: <%= game.release_dates%></span></h3>
 
               </div>
               
