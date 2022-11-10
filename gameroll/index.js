@@ -6,6 +6,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { render } = require('ejs');
+const { response } = require('express');
 
 
 // database configuration
@@ -104,8 +105,8 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const test = await db.query("SELECT * FROM users;")
-    console.log(test)
+    // const test = await db.query("SELECT * FROM users;")
+    // console.log(test)
     // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
@@ -130,32 +131,29 @@ app.post('/register', async (req, res) => {
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    // const username = req.body.username;
-    // const password = req.body.password;
-    // const query = "SELECT password from users where username = $1";
-    // let user = await db.oneOrNone(query, [
-    //   req.body.username,
-    // ]);
-    // if(user) // if the user exists
-    // {
-    //   const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
-    //   if(match) //but the password is right
-    //   {
-    //     req.session.user = { api_key: process.env.API_KEY};
-    //     req.session.save();
-    //     res.redirect('/discover');
-    //   }
-    //   else // the password is wrong
-    //   {
-    //     console.log("Incorrect username or password.");
-    //     res.redirect('/login');
-    //   }
-    // }
-    // else //if the user is not found
-    // {
-    //   console.log("User not found.");
-    //   res.redirect('/register');
-    // }
+    
+    const query = `SELECT * FROM users WHERE email = $1;`;
+
+  db.one(query,[
+    req.body.email,
+    req.body.password
+  ])
+    .then(async(user)=>{
+      const match = await bcrypt.compare(req.body.password, user.password);
+      if(match){
+        req.session.user={
+          api_key: process.env.API_KEY,
+        };
+        req.session.save();
+        res.redirect('/home');
+      }else{
+        res.redirect('/login');
+      }
+    })
+    .catch(function(err){
+      res.redirect('/register');
+      return console.log(err);
+    });
 });
 
 
@@ -173,7 +171,7 @@ app.post('/register', async (req, res) => {
   ])
 });
 
-app.post('/profile', (req, res) => {
+app.get('/profile', (req, res) => {
   axios({
     url: "https://api.igdb.com/v4/games",
     method: 'POST',
@@ -184,9 +182,9 @@ app.post('/profile', (req, res) => {
     },
     data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;"
   })
-    .then(res => {
-        console.log(game.data);
-      res.render('pages/profile', {game: game.data})
+    .then(response => {
+        console.log(response.data);
+      res.render('pages/profile', {games: game.data})
       })
     .catch(err => {
         res.render('pages/home');
