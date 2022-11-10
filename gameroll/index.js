@@ -53,7 +53,13 @@ app.use(
 app.get('/', (req, res) =>{
   // res.redirect('/home'); //this will call the /anotherRoute route in the API
   /* Changed for de-bugging purposes only - Kevin */
-  res.redirect('/register');
+  res.render('pages/home');
+});
+
+app.get('/home', (req, res) =>{
+  // res.redirect('/home'); //this will call the /anotherRoute route in the API
+  /* Changed for de-bugging purposes only - Kevin */
+  res.render('pages/home');
 });
 
 app.post('/home',(req, res) => {
