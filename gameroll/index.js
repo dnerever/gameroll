@@ -6,6 +6,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { render } = require('ejs');
+const { response } = require('express');
 
 
 // database configuration
@@ -49,6 +50,10 @@ app.use(
   })
 );
 
+app.use(
+  express.static(_dirname)
+)
+
 // 4. Get /
 app.get('/', (req, res) =>{
   // res.redirect('/home'); //this will call the /anotherRoute route in the API
@@ -91,6 +96,7 @@ app.get('/home',(req, res) => {
       });
 });
 
+
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
@@ -99,8 +105,8 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const test = await db.query("SELECT * FROM users;")
-    console.log(test)
+    // const test = await db.query("SELECT * FROM users;")
+    // console.log(test)
     // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
@@ -168,20 +174,20 @@ app.post('/register', async (req, res) => {
   ])
 });
 
-app.post('/profile', (req, res) => {
+app.get('/profile', (req, res) => {
   axios({
     url: "https://api.igdb.com/v4/games",
     method: 'POST',
     headers: {
         "Accept": "application/json",
-        "Client-ID": "Client ID",
-        "Authorization": "Bearer access_token",
+        "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
+        "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
     },
     data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;"
   })
-    .then(res => {
-        console.log(game.data);
-      res.render('pages/profile', {game: game.data})
+    .then(response => {
+        console.log(response.data);
+      res.render('pages/profile', {games: game.data})
       })
     .catch(err => {
         res.render('pages/home');
@@ -206,7 +212,7 @@ const auth = (req, res, next) => {
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
-    res.render("pages/profile");
+    res.render("pages/profile", {game: []} );
   });
 
 // 11. GET /logout
