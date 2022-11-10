@@ -49,6 +49,10 @@ app.use(
   })
 );
 
+app.use(
+  express.static(_dirname)
+)
+
 // 4. Get /
 app.get('/', (req, res) =>{
   // res.redirect('/home'); //this will call the /anotherRoute route in the API
