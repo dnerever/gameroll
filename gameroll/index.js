@@ -94,8 +94,8 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const test = await db.query("SELECT * FROM users;")
-    console.log(test)
+    // const test = await db.query("SELECT * FROM users;")
+    // console.log(test)
     // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
@@ -120,32 +120,29 @@ app.post('/register', async (req, res) => {
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    // const username = req.body.username;
-    // const password = req.body.password;
-    // const query = "SELECT password from users where username = $1";
-    // let user = await db.oneOrNone(query, [
-    //   req.body.username,
-    // ]);
-    // if(user) // if the user exists
-    // {
-    //   const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
-    //   if(match) //but the password is right
-    //   {
-    //     req.session.user = { api_key: process.env.API_KEY};
-    //     req.session.save();
-    //     res.redirect('/discover');
-    //   }
-    //   else // the password is wrong
-    //   {
-    //     console.log("Incorrect username or password.");
-    //     res.redirect('/login');
-    //   }
-    // }
-    // else //if the user is not found
-    // {
-    //   console.log("User not found.");
-    //   res.redirect('/register');
-    // }
+    
+    const query = `SELECT * FROM users WHERE email = $1;`;
+
+  db.one(query,[
+    req.body.email,
+    req.body.password
+  ])
+    .then(async(user)=>{
+      const match = await bcrypt.compare(req.body.password, user.password);
+      if(match){
+        req.session.user={
+          api_key: process.env.API_KEY,
+        };
+        req.session.save();
+        res.redirect('/home');
+      }else{
+        res.redirect('/login');
+      }
+    })
+    .catch(function(err){
+      res.redirect('/register');
+      return console.log(err);
+    });
 });
 
 
