@@ -51,7 +51,9 @@ app.use(
 
 // 4. Get /
 app.get('/', (req, res) =>{
-  res.redirect('/home'); //this will call the /anotherRoute route in the API
+  // res.redirect('/home'); //this will call the /anotherRoute route in the API
+  /* Changed for de-bugging purposes only - Kevin */
+  res.redirect('/register');
 });
 
 app.post('/home',(req, res) => {
@@ -92,19 +94,21 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const name = req.body.username;
+    const test = await db.query("SELECT * FROM users;")
+    console.log(test)
+    // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
-    const query = "INSERT INTO users(username, password) VALUES ($1, $2);";
+    const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
     db.any(query, [
-      req.body.username,
-      hash,
+      req.body.email,
+      hash
     ])
-    .then(function (rows) {
+    .then(function (data) {
         res.redirect('/login');
-      })
+    })
     .catch(function (err) {
-        res.redirect('/register');
-    });
+        res.render('pages/register',{message:"Error"});
+    })
   });
 
 // 7. GET /login
@@ -158,6 +162,28 @@ app.post('/register', async (req, res) => {
     req.body.passsword // change to 'hash' later when hashing passwords is implemented
   ])
 });
+
+app.post('/profile', (req, res) => {
+  axios({
+    url: "https://api.igdb.com/v4/games",
+    method: 'POST',
+    headers: {
+        "Accept": "application/json",
+        "Client-ID": "Client ID",
+        "Authorization": "Bearer access_token",
+    },
+    data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;"
+  })
+    .then(res => {
+        console.log(game.data);
+      res.render('pages/profile', {game: game.data})
+      })
+    .catch(err => {
+        res.render('pages/home');
+        return console.log(err);
+    });
+});
+
   
 // 9. Authentication middleware
 
