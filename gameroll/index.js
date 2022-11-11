@@ -6,6 +6,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { render } = require('ejs');
+const { response } = require('express');
 
 
 // database configuration
@@ -49,6 +50,10 @@ app.use(
   })
 );
 
+app.use(
+  express.static(_dirname)
+)
+
 // 4. Get /
 app.get('/', (req, res) =>{
   // res.redirect('/home'); //this will call the /anotherRoute route in the API
@@ -56,41 +61,41 @@ app.get('/', (req, res) =>{
   res.render('pages/home');
 });
 
-app.get('/home', (req, res) =>{
-  // res.redirect('/home'); //this will call the /anotherRoute route in the API
-  /* Changed for de-bugging purposes only - Kevin */
-  res.render('pages/home');
-});
+// app.get('/home', (req, res) =>{
+//   // res.redirect('/home'); //this will call the /anotherRoute route in the API
+//   /* Changed for de-bugging purposes only - Kevin */
+//   res.render('pages/home');
+// });
 
-app.post('/home',(req, res) => {
+app.get('/home',(req, res) => {
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
-          dataType:'json',
-          params: {
+          dataType:'text',
+          headers: {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
-              "apikey": req.session.user.api_key,
-              "keyword": "game", //you can choose any artist/event here
-              "size": 10,
-          }
+          },
+          data: "fields name; limit 1;",
+          body: "fields name; limit 1;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
       // Send some parameters
-      res.render('pages/discover', {
-        results: results,
+          res.render('pages/home', {
+            results: results,
       });
       })
       .catch(error => {
       // Handle errors
-          res.render('pages/discover', {
+          res.render('pages/home', {
             results: [],
             message: error.message || error
           });
           // console.log('ERROR:', error.message || error);
       });
 });
+
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
@@ -100,8 +105,8 @@ app.get('/register', (req, res) => {
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
-    const test = await db.query("SELECT * FROM users;")
-    console.log(test)
+    // const test = await db.query("SELECT * FROM users;")
+    // console.log(test)
     // const name = req.body.username;
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
@@ -126,32 +131,32 @@ app.post('/register', async (req, res) => {
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    // const username = req.body.username;
-    // const password = req.body.password;
-    // const query = "SELECT password from users where username = $1";
-    // let user = await db.oneOrNone(query, [
-    //   req.body.username,
-    // ]);
-    // if(user) // if the user exists
-    // {
-    //   const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
-    //   if(match) //but the password is right
-    //   {
-    //     req.session.user = { api_key: process.env.API_KEY};
-    //     req.session.save();
-    //     res.redirect('/discover');
-    //   }
-    //   else // the password is wrong
-    //   {
-    //     console.log("Incorrect username or password.");
-    //     res.redirect('/login');
-    //   }
-    // }
-    // else //if the user is not found
-    // {
-    //   console.log("User not found.");
-    //   res.redirect('/register');
-    // }
+    const username = req.body.email;
+    const password = req.body.password;
+    const query = "SELECT password from users where email = $1";
+    let user = await db.oneOrNone(query, [
+      req.body.username,
+    ]);
+    if(user) // if the user exists
+    {
+      const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
+      if(match) //but the password is right
+      {
+        req.session.user = { api_key: process.env.API_KEY};
+        req.session.save();
+        res.redirect('/discover');
+      }
+      else // the password is wrong
+      {
+        console.log("Incorrect username or password.");
+        res.redirect('/login');
+      }
+    }
+    else //if the user is not found
+    {
+      console.log("User not found.");
+      res.redirect('/register');
+    }
 });
 
 
@@ -169,20 +174,20 @@ app.post('/register', async (req, res) => {
   ])
 });
 
-app.post('/profile', (req, res) => {
+app.get('/profile', (req, res) => {
   axios({
     url: "https://api.igdb.com/v4/games",
     method: 'POST',
     headers: {
         "Accept": "application/json",
         "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
-        "Authorization": "Bearer access_token",
+        "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
     },
     data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;"
   })
-    .then(res => {
-        console.log(game.data);
-      res.render('pages/profile', {game: game.data})
+    .then(response => {
+        console.log(response.data);
+      res.render('pages/profile', {games: game.data})
       })
     .catch(err => {
         res.render('pages/home');
