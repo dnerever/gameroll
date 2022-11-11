@@ -61,41 +61,41 @@ app.get('/', (req, res) =>{
   res.render('pages/home');
 });
 
-app.get('/home', (req, res) =>{
-  // res.redirect('/home'); //this will call the /anotherRoute route in the API
-  /* Changed for de-bugging purposes only - Kevin */
-  res.render('pages/home');
-});
+// app.get('/home', (req, res) =>{
+//   // res.redirect('/home'); //this will call the /anotherRoute route in the API
+//   /* Changed for de-bugging purposes only - Kevin */
+//   res.render('pages/home');
+// });
 
-app.post('/home',(req, res) => {
+app.get('/home',(req, res) => {
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
-          dataType:'json',
-          params: {
+          dataType:'text',
+          headers: {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
-              "apikey": req.session.user.api_key,
-              "keyword": "game", //you can choose any artist/event here
-              "size": 10,
-          }
+          },
+          data: "fields name; limit 1;",
+          body: "fields name; limit 1;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
       // Send some parameters
-      res.render('pages/discover', {
-        results: results,
+          res.render('pages/home', {
+            results: results,
       });
       })
       .catch(error => {
       // Handle errors
-          res.render('pages/discover', {
+          res.render('pages/home', {
             results: [],
             message: error.message || error
           });
           // console.log('ERROR:', error.message || error);
       });
 });
+
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
@@ -131,29 +131,32 @@ app.post('/register', async (req, res) => {
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    
-    const query = `SELECT * FROM users WHERE email = $1;`;
-
-  db.one(query,[
-    req.body.email,
-    req.body.password
-  ])
-    .then(async(user)=>{
-      const match = await bcrypt.compare(req.body.password, user.password);
-      if(match){
-        req.session.user={
-          api_key: process.env.API_KEY,
-        };
+    const username = req.body.email;
+    const password = req.body.password;
+    const query = "SELECT password from users where email = $1";
+    let user = await db.oneOrNone(query, [
+      req.body.username,
+    ]);
+    if(user) // if the user exists
+    {
+      const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
+      if(match) //but the password is right
+      {
+        req.session.user = { api_key: process.env.API_KEY};
         req.session.save();
-        res.redirect('/home');
-      }else{
+        res.redirect('/discover');
+      }
+      else // the password is wrong
+      {
+        console.log("Incorrect username or password.");
         res.redirect('/login');
       }
-    })
-    .catch(function(err){
+    }
+    else //if the user is not found
+    {
+      console.log("User not found.");
       res.redirect('/register');
-      return console.log(err);
-    });
+    }
 });
 
 
