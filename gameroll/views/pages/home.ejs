@@ -5,7 +5,7 @@
 <main>
   <div class="container">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-    <h4 style="color:red;">Home page</h4>
+    <!-- <h4 style="color:red;">Home page</h4> -->
     <!-- <h2> testing if the page will work</h2> -->
     <table>
       <thead>
@@ -14,8 +14,7 @@
           <th><centre>Event location:</centre></th>
       </thead>
       <tbody>
-        <td> <%= results.data %></td>
-        <td> <%= results.data.game %></td>
+        <td> <%= results.data._embedded %></td>
       </tbody>
     <div class="py-4">
 
