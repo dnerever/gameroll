@@ -50,9 +50,15 @@ app.use(
   })
 );
 
-app.use(
-  express.static(_dirname)
-)
+// app.use(
+//   express.static(_dirname)
+// )
+
+app.get('/home1', (req, res) =>{
+  // res.redirect('/home'); //this will call the /anotherRoute route in the API
+  /* Changed for de-bugging purposes only - Kevin */
+  res.render('pages/home');
+});
 
 // 4. Get /
 app.get('/', (req, res) =>{
@@ -131,32 +137,26 @@ app.post('/register', async (req, res) => {
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    const username = req.body.email;
+    const email = req.body.email;
     const password = req.body.password;
-    const query = "SELECT password from users where email = $1";
-    let user = await db.oneOrNone(query, [
-      req.body.username,
-    ]);
-    if(user) // if the user exists
-    {
-      const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
-      if(match) //but the password is right
-      {
-        req.session.user = { api_key: process.env.API_KEY};
-        req.session.save();
-        res.redirect('/discover');
-      }
-      else // the password is wrong
-      {
-        console.log("Incorrect username or password.");
+    const query = `SELECT * FROM users WHERE email = $1;`;
+    
+    db.one(query, [
+      email,
+      password
+    ])
+    .then(async (user)=> {
+      const match = await bcrypt.compare(req.body.password, user.password)
+      if(match){
+        res.redirect('/home1');
+      }else{
         res.redirect('/login');
       }
-    }
-    else //if the user is not found
-    {
-      console.log("User not found.");
+    })
+    .catch(function(err){
       res.redirect('/register');
-    }
+      return console.log(err);
+    });
 });
 
 
