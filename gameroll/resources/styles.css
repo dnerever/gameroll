@@ -5,9 +5,13 @@ body {
   h1 {
     color: white;
     text-align: center;
+    
   }
 
   p {
     font-family: verdana;
     font-size: 20px;
   }
+
+  p.solid {border-style: solid;}
+  h1.solid {border-style: solid;}
