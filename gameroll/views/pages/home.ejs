@@ -7,22 +7,15 @@
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <!-- <h4 style="color:red;">Home page</h4> -->
     <!-- <h2> testing if the page will work</h2> -->
-    <table>
-      <thead>
-          <th><centre>Event name:</centre></th>
-          <th><centre>Event url:</centre></th>
-          <th><centre>Event location:</centre></th>
-      </thead>
-      <tbody>
-        <td> <%= results.data[0].name %></td>
-      </tbody>
     <div class="py-4">
 
       <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
-        <h3 class="card-header">Game title: <%= results.data[0].name %></h3>
+        <h3 class="card-header">Game title: <%= results.data[3].name %></h3>
         <img src="../../resources/img/controller.jpg" class="card-img-top" alt="...">
         <div class="card-body">
-          Game description here:
+          <!-- Game description here: -->
+          <p>Game Stats:</p>
+          <p>Summary: <%= results.data[3].summary %></p>
           <br>
           <br>
           <div class="col-md-8 mx-auto">
