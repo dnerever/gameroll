@@ -82,12 +82,12 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields name; limit 1;",
-          body: "fields name; limit 1;",
+          data: "fields name; limit 2;",
+          body: "fields name; limit 2;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
-      // Send some parameters
+          // Send some parameters
           res.render('pages/home', {
             results: results,
       });
