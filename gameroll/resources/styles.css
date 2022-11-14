@@ -3,9 +3,10 @@ body {
   }
 
   h1 {
-    color: white;
+    color: rgb(224, 223, 223);
     text-align: center;
-    
+    text-decoration-line: overline;
+    letter-spacing: 5px;
   }
 
   p {
