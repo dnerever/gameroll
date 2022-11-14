@@ -188,7 +188,7 @@ app.get('/profile', (req, res) => {
   })
     .then(results => {
         console.log(results.data);
-      res.render('pages/profile', {games: game.data})
+      res.render('pages/profile', {games: data})
       })
     .catch(err => {
         res.render('pages/home',{
