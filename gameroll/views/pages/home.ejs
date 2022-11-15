@@ -15,22 +15,12 @@
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
-<<<<<<< HEAD
           <p>Summary: <%= results.data[3].summary %></p>
-          <br> <!-- Better way of doing this? -->
-          <br>
-          <div class="col-md-8 mx-auto">
-            <button type="button" class="btn btn-danger">Save Game</button>
-            <form action="/newGame" method="GET"><button type="button" class="btn btn-primary">Next Game >>></button></form>
-          </div>
-=======
-          <p>Summary: <%= results.data[0].summary %></p>
-          <p> <%= results.data[0].url %></p>      
->>>>>>> 691fadbfcccb080b0633bb5f36e6beca44442cb5
+          <p> <%= results.data[3].url %></p>   
         </div>
       </div>
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-lg">Next Game >>></button>
+        <form action="/newGame" method="GET"><button type="button" class="btn btn-primary btn-lg">Next Game >>></button></form>
         <button type="button" class="btn btn-danger btn-lg">Save Game</button>
       </div>
     </div>
