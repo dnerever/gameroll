@@ -147,7 +147,7 @@ app.post('/login', async(req, res) => {
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
       if(match){
-        res.redirect('/home1');
+        res.redirect('/home');
       }else{
         res.redirect('/login');
       }
