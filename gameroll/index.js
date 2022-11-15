@@ -63,8 +63,7 @@ app.get('/home1', (req, res) =>{
 // 4. Get /
 app.get('/', (req, res) =>{
   // res.redirect('/home'); //this will call the /anotherRoute route in the API
-  /* Changed for de-bugging purposes only - Kevin */
-  res.render('pages/home');
+  res.redirect('pages/home');
 });
 
 // app.get('/home', (req, res) =>{
