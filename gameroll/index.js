@@ -193,7 +193,7 @@ app.get('/profile', (req, res) => {
     .catch(err => {
         res.render('pages/home',{
           results: [],
-          message: error.message || error
+          message: err.message || err
         });
         
     });
