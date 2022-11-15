@@ -7,24 +7,15 @@
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <!-- <h4 style="color:red;">Home page</h4> -->
     <!-- <h2> testing if the page will work</h2> -->
-    <table>
-      <thead>
-          <th><centre>Event name:</centre></th>
-          <th><centre>Event url:</centre></th>
-          <th><centre>Event location:</centre></th>
-      </thead>
-      <tbody>
-        <!-- <td> <%# results.data %></td>
-        <td> <%# results.data.game %></td> -->
-        <td> <%= results.data[0].name %></td>
-      </tbody>
     <div class="py-4">
+
       <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
-        <h3 class="card-header">Game title: <%= results.data[3].name %></h3>
-        <img src="../../resources/img/controller.jpg" class="card-img-top" alt="...">
+        <h3 class="card-header">Game title: <%= results.data[0].name %></h3>
+        <img src="<%=results.data[0].url%>" class="img-thumbnail" alt="..." width="300">
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
+<<<<<<< HEAD
           <p>Summary: <%= results.data[3].summary %></p>
           <br> <!-- Better way of doing this? -->
           <br>
@@ -32,7 +23,15 @@
             <button type="button" class="btn btn-danger">Save Game</button>
             <form action="/newGame" method="GET"><button type="button" class="btn btn-primary">Next Game >>></button></form>
           </div>
+=======
+          <p>Summary: <%= results.data[0].summary %></p>
+          <p> <%= results.data[0].url %></p>      
+>>>>>>> 691fadbfcccb080b0633bb5f36e6beca44442cb5
         </div>
+      </div>
+      <div class="btn-group btn-group-lg" roloe="group">
+        <button type="button" class="btn btn-danger">Save Game</button>
+        <button type="button" class="btn btn-primary">Next Game >>></button>
       </div>
     </div>
   </div>

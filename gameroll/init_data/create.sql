@@ -15,3 +15,10 @@ DROP TABLE IF EXISTS games CASCADE;
 CREATE TABLE games(
     game_id INT PRIMARY KEY
 );
+
+DROP TABLE IF EXISTS game_genres CASCADE;
+CREATE TABLE game_genres(
+    table_id INT PRIMARY KEY,
+    genre_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL
+);

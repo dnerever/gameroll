@@ -50,6 +50,7 @@ app.use(
   })
 );
 
+//trying to link css stylesheet -- does not work
 // app.use(
 //   express.static(_dirname)
 // )
@@ -77,14 +78,14 @@ app.get('/', (req, res) =>{
 
 app.get('/home',(req, res) => {
   axios({
-      url: `https://api.igdb.com/v4/games`,
+      url: `https://api.igdb.com/v4/artworks`,
           method: 'POST',
           dataType:'text',
           headers: {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields name, summary; limit 5;",
+          data: "fields *; limit 3;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -201,6 +202,12 @@ app.get('/profile', (req, res) => {
     });
 });
 
+
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
   
 // 9. Authentication middleware
 
@@ -214,18 +221,14 @@ const auth = (req, res, next) => {
 
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
-   app.use(auth);
+  app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
     res.render("pages/profile", {game: []} );
   });
 
-// 11. GET /logout
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.render('pages/logout');
-});
+
 
 
 
