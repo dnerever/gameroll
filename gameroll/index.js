@@ -50,6 +50,7 @@ app.use(
   })
 );
 
+//trying to link css stylesheet -- does not work
 // app.use(
 //   express.static(_dirname)
 // )
