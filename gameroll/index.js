@@ -205,14 +205,14 @@ app.get('/profile', (req, res) => {
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
-    return res.redirect('/register');
+    return res.redirect('/home');
   }
   next();
 };
 
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
-  // app.use(auth);
+   app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
