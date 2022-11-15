@@ -147,7 +147,7 @@ app.post('/login', async(req, res) => {
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
       if(match){
-        res.redirect('/home1');
+        res.redirect('/home');
       }else{
         res.redirect('/login');
       }
@@ -193,7 +193,7 @@ app.get('/profile', (req, res) => {
     .catch(err => {
         res.render('pages/home',{
           results: [],
-          message: error.message || error
+          message: err.message || err
         });
         
     });
@@ -205,13 +205,13 @@ app.get('/profile', (req, res) => {
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
-    return res.redirect('/register');
+    return res.redirect('/home');
   }
   next();
 };
 
 // We don't want this because we want users to be able to see our website without having to log in 
-  // Authentication Required
+  // // Authentication Required
   app.use(auth);
 
 // 10. GET /discover
