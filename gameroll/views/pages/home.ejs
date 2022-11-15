@@ -15,8 +15,18 @@
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
+<<<<<<< HEAD
+          <p>Summary: <%= results.data[3].summary %></p>
+          <br> <!-- Better way of doing this? -->
+          <br>
+          <div class="col-md-8 mx-auto">
+            <button type="button" class="btn btn-danger">Save Game</button>
+            <form action="/newGame" method="GET"><button type="button" class="btn btn-primary">Next Game >>></button></form>
+          </div>
+=======
           <p>Summary: <%= results.data[0].summary %></p>
           <p> <%= results.data[0].url %></p>      
+>>>>>>> 691fadbfcccb080b0633bb5f36e6beca44442cb5
         </div>
       </div>
       <div class="btn-group btn-group-lg" roloe="group">
