@@ -199,6 +199,11 @@ app.get('/profile', (req, res) => {
     });
 });
 
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
   
 // 9. Authentication middleware
 
@@ -219,11 +224,7 @@ app.get('/profile',(req, res) => {
     res.render("pages/profile", {game: []} );
   });
 
-// 11. GET /logout
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.render('pages/logout');
-});
+
 
 
 
