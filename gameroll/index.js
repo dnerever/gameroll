@@ -199,6 +199,7 @@ app.get('/profile', (req, res) => {
     });
 });
 
+
 // 11. GET /logout
 app.get('/logout', (req, res) => {
   req.session.destroy();
