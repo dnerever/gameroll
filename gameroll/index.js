@@ -50,14 +50,17 @@ app.use(
   })
 );
 
+//trying to link css stylesheet -- does not work
 // app.use(
 //   express.static(_dirname)
 // )
 
-app.get('/home1', (req, res) =>{
-  // res.redirect('/home'); //this will call the /anotherRoute route in the API
-  /* Changed for de-bugging purposes only - Kevin */
-  res.render('pages/home');
+app.get('/nextGame', (req,res) => {
+  
+  var rand = Math.round(10000 * Math.random());
+  console.log("Rand:");
+  console.log(rand);
+  res.render('pages/home',{results: results[rand].data});
 });
 
 // 4. Get /

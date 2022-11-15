@@ -19,9 +19,9 @@
           <p> <%= results.data[1].url %></p>      
         </div>
       </div>
-      <div class="btn-group btn-group-lg" roloe="group">
-        <button type="button" class="btn btn-danger">Save Game</button>
-        <button type="button" class="btn btn-primary">Next Game >>></button>
+      <div class="d-flex justify-content-between">
+        <form action="/newGame" method="GET"><button type="button" class="btn btn-primary btn-lg">Next Game >>></button></form>
+        <button type="button" class="btn btn-danger btn-lg">Save Game</button>
       </div>
     </div>
   </div>
