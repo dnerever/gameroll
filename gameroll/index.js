@@ -74,14 +74,14 @@ app.get('/', (req, res) =>{
 
 app.get('/home',(req, res) => {
   axios({
-      url: `https://api.igdb.com/v4/games`,
+      url: `https://api.igdb.com/v4/artworks`,
           method: 'POST',
           dataType:'text',
           headers: {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields name, summary; limit 5;",
+          data: "fields *; limit 3;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -146,7 +146,7 @@ app.post('/login', async(req, res) => {
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
       if(match){
-        res.redirect('/home1');
+        res.redirect('/home');
       }else{
         res.redirect('/login');
       }
@@ -204,14 +204,14 @@ app.get('/profile', (req, res) => {
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
-    return res.redirect('/register');
+    return res.redirect('/home');
   }
   next();
 };
 
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
-  // app.use(auth);
+  app.use(auth);
 
 // 10. GET /discover
 app.get('/profile',(req, res) => {
