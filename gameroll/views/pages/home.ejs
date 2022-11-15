@@ -16,14 +16,12 @@
           <!-- Game description here: -->
           <p>Game Stats:</p>
           <p>Summary: <%= results.data[0].summary %></p>
-          <p> <%= results.data[0].url %></p>
-          <br> <!-- Better way of doing this? -->
-          <br>
-          <div class="col-md-8 mx-auto">
-            <button type="button" class="btn btn-danger">Save Game</button>
-            <button type="button" class="btn btn-primary">Next Game >>></button>
-          </div>
+          <p> <%= results.data[0].url %></p>      
         </div>
+      </div>
+      <div class="btn-group btn-group-lg" roloe="group">
+        <button type="button" class="btn btn-danger">Save Game</button>
+        <button type="button" class="btn btn-primary">Next Game >>></button>
       </div>
     </div>
   </div>
