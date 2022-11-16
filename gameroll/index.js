@@ -74,8 +74,33 @@ app.get('/', (req, res) =>{
 //   /* Changed for de-bugging purposes only - Kevin */
 //   res.render('pages/home');
 // });
-
+let count = 0;
 app.get('/home',(req, res) => {
+  var query = "fields name, screenshots.*, summary; where (summary != null & screenshots != null);";
+
+  axios({   //We should move this call out of /home so that it is only called once when starting
+    url: `https://api.igdb.com/v4/games/count`,
+        method: 'POST',
+        dataType:'text',
+        headers: {
+            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
+            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+        },
+        data: query,  //working with data[3] - otter bash!
+    })
+    .then(results => {
+      console.log("Count: " + results.data.count); // the results will be displayed on the terminal if the docker containers are running
+      // Send some parameters
+      count = results.data.count;
+      return count;
+    });
+  //   .catch(error => {
+  //   // Handle errors
+  //     console.log("Error with initial API count call.")
+  // })
+  console.log("Count - 1 after first call: " + (count - 1));
+  var randomGameId = Math.floor(Math.random() * (count -1));
+  console.log("RandomGameInt Initialized: " + randomGameId);
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
@@ -84,13 +109,15 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields name, screenshots.*, summary; where (rating > 75 & rating_count > 5 & summary != null & screenshots != null); limit 5;",  //working with data[3] - otter bash!
+          data: query + " offset " + randomGameId + "; limit 2;",  //"count/2" should be replaced by the number game we want; Maybe loop through this call 5 times for 5 different games?
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
+          console.log("randomGameId from /games call: " + randomGameId);
           // Send some parameters
           res.render('pages/home', {
             results: results,
+            count: count,   //Keith stopped here, trying to pass a count variable for use in this second api call. Need to check format of count seems to be an [obj] [obj]
       });
       })
       .catch(error => {
