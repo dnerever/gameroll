@@ -84,7 +84,7 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields *, screenshots.*; limit 3;",
+          data: "fields name, screenshots.*, summary; where (rating > 75 & rating_count > 5 & summary != null & screenshots != null); limit 5;",  //working with data[3] - otter bash!
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
