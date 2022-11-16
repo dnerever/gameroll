@@ -76,7 +76,10 @@ app.get('/', (req, res) =>{
 // });
 let count = 0;
 app.get('/home',(req, res) => {
+  console.log("\n---NEW /home call---\n");
   var query = "fields name, screenshots.*, summary; where (summary != null & screenshots != null);";
+  var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
+
 
   axios({   //We should move this call out of /home so that it is only called once when starting
     url: `https://api.igdb.com/v4/games/count`,
@@ -86,21 +89,26 @@ app.get('/home',(req, res) => {
             "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
             "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
         },
-        data: query,  //working with data[3] - otter bash!
+        data: query,  //Base query to return the number of games that match our criteria
     })
     .then(results => {
-      console.log("Count: " + results.data.count); // the results will be displayed on the terminal if the docker containers are running
-      // Send some parameters
+      console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
-      return count;
-    });
-  //   .catch(error => {
-  //   // Handle errors
-  //     console.log("Error with initial API count call.")
-  // })
-  console.log("Count - 1 after first call: " + (count - 1));
-  var randomGameId = Math.floor(Math.random() * (count -1));
-  console.log("RandomGameInt Initialized: " + randomGameId);
+      //return count;
+    })
+    .catch(error => {
+    // Handle errors
+      console.log("Error with initial API count call.")
+  });
+  
+
+  console.log("---(Count - 1) after first call: " + (count - 1) + " ---");
+
+  for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
+    randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
+  }
+  //randomGameIds.length = 5;
+  console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
@@ -109,15 +117,14 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: query + " offset " + randomGameId + "; limit 2;",  //"count/2" should be replaced by the number game we want; Maybe loop through this call 5 times for 5 different games?
+          data: query + " offset " + randomGameIds[0] + "; limit 1;",  //Currently returns the info about one random game from our query result 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
-          console.log("randomGameId from /games call: " + randomGameId);
           // Send some parameters
           res.render('pages/home', {
             results: results,
-            count: count,   //Keith stopped here, trying to pass a count variable for use in this second api call. Need to check format of count seems to be an [obj] [obj]
+            //count: count,   //Not being used on the home page
       });
       })
       .catch(error => {
