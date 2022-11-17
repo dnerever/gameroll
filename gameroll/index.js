@@ -57,6 +57,9 @@ app.use(
 //   express.static(_dirname)
 // )
 
+//another attempt to link stylesheet
+//app.use(express.static(__dirname + '/'));
+
 
 // 4. Get /
 app.get('/', (req, res) =>{
