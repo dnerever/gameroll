@@ -81,8 +81,8 @@ app.get('/home',(req, res) => {
         method: 'POST',
         dataType:'text',
         headers: {
-            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+          "Client-ID": process.env.client_id,
+          "Authorization": process.env.authorization,
         },
         data: query,  //Base query to return the number of games that match our criteria
     })
@@ -109,8 +109,8 @@ app.get('/home',(req, res) => {
           method: 'POST',
           dataType:'text',
           headers: {
-              "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-              "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+              "Client-ID": process.env.client_id,
+              "Authorization": process.env.authorization,
           },
           data: query + " offset " + randomGameIds[0] + "; limit 2;", 
       })
@@ -229,8 +229,8 @@ app.get('/nextGame', (req,res) => {
         method: 'POST',
         dataType:'text',
         headers: {
-            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+          "Client-ID": process.env.client_id,
+          "Authorization": process.env.authorization,
         },
         data: "fields *, screenshots.*; limit 3;",
     })
@@ -261,8 +261,8 @@ app.get('/saveGame', (req,res) => {
       dataType: 'text',
       headers: {
           
-          "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
-          "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+        "Client-ID": process.env.client_id,
+        "Authorization": process.env.authorization,
       },
       data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
       body: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
