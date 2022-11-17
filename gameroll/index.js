@@ -58,7 +58,7 @@ app.use(
 // )
 
 //another attempt to link stylesheet
-//app.use(express.static(__dirname + '/'));
+app.use(express.static(__img + '/'));
 
 
 // 4. Get /
