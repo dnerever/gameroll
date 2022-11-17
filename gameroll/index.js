@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { render } = require('ejs');
 const { response } = require('express');
+const { queryResult } = require('pg-promise');
+
 
 
 // database configuration
@@ -110,7 +112,7 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: query + " offset " + randomGameIds[0] + "; limit 1;",  //Currently returns the info about one random game from our query result 
+          data: query + " offset " + randomGameIds[0] + "; limit 2;", 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -175,9 +177,14 @@ app.post('/login', async(req, res) => {
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
       if(match){
+        req.session.user = {
+          user_id: process.env.USER_ID,
+        };
+        req.session.save();
         res.redirect('/home');
       }else{
         res.redirect('/login');
+        res.render('pages/login', {message : 'Need to sign in to access this page'});
       }
     })
     .catch(function(err){
@@ -201,38 +208,7 @@ app.post('/register', async (req, res) => {
   ])
 });
 
-app.get('/profile', (req, res) => {
-  axios({
-    url: "https://api.igdb.com/v4/games",
-    method: 'POST',
-    dataType: 'text',
-    headers: {
-        
-        "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
-        "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
-    },
-    data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
-    body: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
-  })
-    .then(games => {
-        console.log(games.data);
-      res.render('pages/profile', {games: data})
-      })
-    .catch(err => {
-        res.render('pages/profile',{
-          games: [],
-          message: err.message || err
-        });
-        
-    });
-});
 
-
-// 11. GET /logout
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.render('pages/logout');
-});
   
 // 9. Authentication middleware
 
@@ -278,11 +254,38 @@ app.post('/saveGame', (req,res) => {
   // // Authentication Required
   app.use(auth);
 
-// 10. GET /discover
-app.get('/profile',(req, res) => {
-    res.render("pages/profile", {game: []} );
+  app.get('/profile', (req, res) => {
+    axios({
+      url: "https://api.igdb.com/v4/games",
+      method: 'POST',
+      dataType: 'text',
+      headers: {
+          
+          "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
+          "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+      },
+      data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
+      body: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
+    })
+      .then(games => {
+          console.log(games.data);
+        res.render('pages/profile', {games: data})
+        })
+      .catch(err => {
+          res.render('pages/profile',{
+            games: [],
+            message: err.message || err
+          });
+          
+      });
   });
-
+  
+  
+  // 11. GET /logout
+  app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.render('pages/logout');
+  });
 
 
 

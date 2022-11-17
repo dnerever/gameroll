@@ -11,13 +11,14 @@
 
       <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
         <h3 class="card-header">Game title: <%= results.data[0].name %></h3>
-        <h3 class="card-header">Games count: <%= results.count %></h3>
         <img src="<%= results.data[0].screenshots[0].url %>" class="img-thumbnail" alt="..." width="300">
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
           <p>Summary: <%= results.data[0].summary %></p>
-          <p> <%= results.data[0].url %></p>      
+          <p> <%= results.data[0].url %></p>
+          <br> <!-- Better way of doing this? -->
+          <br>
         </div>
       </div>
       <div class="d-flex justify-content-between">
@@ -25,7 +26,8 @@
         <form action="/saveGame" method="POST">
           <button type="button" class="btn btn-danger btn-lg">Save Game</button>
           <input type="hidden" />
-      </form>
+        </form>
+        
       </div>
     </div>
   </div>
