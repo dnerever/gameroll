@@ -57,6 +57,9 @@ app.use(
 //   express.static(_dirname)
 // )
 
+//another attempt to link stylesheet
+//app.use(express.static(__dirname + '/'));
+
 
 // 4. Get /
 app.get('/', (req, res) =>{
@@ -247,12 +250,19 @@ app.get('/nextGame', (req,res) => {
 });
 
 app.post('/saveGame', (req,res) => {
-    console.log(res.data);
+  console.log("helloa!!");
+  console.log(req.session.user);
+    if (req.session.user){
+      //save game
+
+    } else {
+      res.render('pages/login', {message : 'Need to sign in to access this page'});
+    }
 });
 
 // We don't want this because we want users to be able to see our website without having to log in 
-  // // Authentication Required
-  app.use(auth);
+// // Authentication Required
+app.use(auth);
 
   app.get('/profile', (req, res) => {
     axios({
