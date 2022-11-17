@@ -72,7 +72,7 @@ app.get('/', (req, res) =>{
 let count = 0;
 app.get('/home',(req, res) => {
   console.log("\n---NEW /home call---\n");
-  var query = "fields name, screenshots.*, summary; where (summary != null & screenshots != null);";
+  var query = "fields name, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
 
 
