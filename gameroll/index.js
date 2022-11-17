@@ -55,13 +55,6 @@ app.use(
 //   express.static(_dirname)
 // )
 
-app.get('/nextGame', (req,res) => {
-  
-  var rand = Math.round(10000 * Math.random());
-  console.log("Rand:");
-  console.log(rand);
-  res.render('pages/home',{results: results[rand].data});
-});
 
 // 4. Get /
 app.get('/', (req, res) =>{
@@ -216,6 +209,32 @@ const auth = (req, res, next) => {
   }
   next();
 };
+
+app.get('/nextGame', (req,res) => {
+  
+  var rand = Math.round(10000 * Math.random());
+
+  axios({
+    url: `https://api.igdb.com/v4/games`,
+        method: 'POST',
+        dataType:'text',
+        headers: {
+            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
+            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+        },
+        data: "fields *, screenshots.*; limit 3;",
+    })
+    then(results => {
+      res.render('pages/randomHome', {results: results.data[rand]})
+    })
+    .catch(error => {
+    // Handle errors
+      res.render('pages/home', {
+        results: [],
+        message: error.message || error
+      });
+  });
+});
 
 // We don't want this because we want users to be able to see our website without having to log in 
   // // Authentication Required
