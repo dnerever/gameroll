@@ -246,8 +246,8 @@ app.get('/nextGame', (req,res) => {
   });
 });
 
-app.get('/saveGame', (req,res) => {
-    console.log(games.data);
+app.post('/saveGame', (req,res) => {
+    console.log(res.data);
 });
 
 // We don't want this because we want users to be able to see our website without having to log in 
