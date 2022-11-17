@@ -247,7 +247,14 @@ app.get('/nextGame', (req,res) => {
 });
 
 app.post('/saveGame', (req,res) => {
-    console.log(res.data);
+  console.log("helloa!!");
+  console.log(req.session.user);
+    if (req.session.user){
+      //save game
+
+    } else {
+      res.render('pages/login', {message : 'Need to sign in to access this page'});
+    }
 });
 
 // We don't want this because we want users to be able to see our website without having to log in 
