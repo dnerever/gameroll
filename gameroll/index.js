@@ -75,14 +75,14 @@ app.get('/', (req, res) =>{
 
 app.get('/home',(req, res) => {
   axios({
-      url: `https://api.igdb.com/v4/artworks`,
+      url: `https://api.igdb.com/v4/games`,
           method: 'POST',
           dataType:'text',
           headers: {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields *; limit 3;",
+          data: "fields *, cover.*; limit 5;",
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running

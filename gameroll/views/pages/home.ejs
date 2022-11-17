@@ -10,13 +10,12 @@
     <div class="py-4">
 
       <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
-        <h3 class="card-header">Game title: <%= results.data[0].name %></h3>
-        <img src="<%=results.data[0].url%>" class="img-thumbnail" alt="..." width="300">
+        <h3 class="card-header">Game title: <%= results.data[1].name %></h3>
+        <img src="<%= results.data[1].cover.url %>" class="img-thumbnail" alt="..." width="300">
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
-          <p>Summary: <%= results.data[0].summary %></p>
-          <p> <%= results.data[0].url %></p>
+          <p>Summary: <%= results.data[1].summary %></p>
           <br> <!-- Better way of doing this? -->
           <br>
           <div class="col-md-8 mx-auto">
