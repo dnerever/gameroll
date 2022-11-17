@@ -10,12 +10,14 @@
     <div class="py-4">
 
       <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
-        <h3 class="card-header">Game title: <%= results.data[1].name %></h3>
-        <img src="<%= results.data[1].cover.url %>" class="img-thumbnail" alt="..." width="300">
+        <h3 class="card-header">Game title: <%= results.data[0].name %></h3>
+        <h3 class="card-header">Games count: <%= results.count %></h3>
+        <img src="<%= results.data[0].screenshots[0].url %>" class="img-thumbnail" alt="..." width="300">
         <div class="card-body">
           <!-- Game description here: -->
           <p>Game Stats:</p>
-          <p>Summary: <%= results.data[1].summary %></p>
+          <p>Summary: <%= results.data[0].summary %></p>
+          <p> <%= results.data[0].url %></p>
           <br> <!-- Better way of doing this? -->
           <br>
           <div class="col-md-8 mx-auto">
@@ -23,6 +25,10 @@
             <button type="button" class="btn btn-primary">Next Game >>></button>
           </div>
         </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <form action="/newGame" method="GET"><button type="button" class="btn btn-primary btn-lg">Next Game >>></button></form>
+        <form action="/saveGame" method="POST"><button type="button" class="btn btn-danger btn-lg">Save Game</button></form>
       </div>
     </div>
   </div>

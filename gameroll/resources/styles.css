@@ -1,5 +1,11 @@
+head {
+  background-color: rgb(52,52,52);
+  font-family: Verdana, sans-serif;
+}
+
 body {
     background-color: rgb(52,52,52);
+    font-family: Verdana, sans-serif;
   }
 
   h1 {
@@ -13,6 +19,3 @@ body {
     font-family: verdana;
     font-size: 20px;
   }
-
-  p.solid {border-style: solid;}
-  h1.solid {border-style: solid;}
