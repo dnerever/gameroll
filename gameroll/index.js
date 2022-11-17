@@ -102,7 +102,7 @@ app.get('/home',(req, res) => {
   for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
     randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
   }
-  //randomGameIds.length = 5;
+
   console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
   axios({
       url: `https://api.igdb.com/v4/games`,
@@ -281,15 +281,11 @@ app.get('/saveGame', (req,res) => {
   });
   
   
-  // 11. GET /logout
-  app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/logout');
-  });
-
-
-
-
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
 
 app.listen(3000);
 console.log("Server is listening on port 3000");
