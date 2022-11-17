@@ -84,8 +84,8 @@ app.get('/home',(req, res) => {
         method: 'POST',
         dataType:'text',
         headers: {
-            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+          "Client-ID": process.env.client_id,
+          "Authorization": process.env.authorization,
         },
         data: query,  //Base query to return the number of games that match our criteria
     })
@@ -105,15 +105,15 @@ app.get('/home',(req, res) => {
   for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
     randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
   }
-  //randomGameIds.length = 5;
+
   console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
           dataType:'text',
           headers: {
-              "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-              "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+              "Client-ID": process.env.client_id,
+              "Authorization": process.env.authorization,
           },
           data: query + " offset " + randomGameIds[0] + "; limit 2;", 
       })
@@ -232,8 +232,8 @@ app.get('/nextGame', (req,res) => {
         method: 'POST',
         dataType:'text',
         headers: {
-            "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
-            "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+          "Client-ID": process.env.client_id,
+          "Authorization": process.env.authorization,
         },
         data: "fields *, screenshots.*; limit 3;",
     })
@@ -249,8 +249,8 @@ app.get('/nextGame', (req,res) => {
   });
 });
 
-app.get('/saveGame', (req,res) => {
-    console.log(games.data);
+app.post('/saveGame', (req,res) => {
+    console.log(res.data);
 });
 
 // We don't want this because we want users to be able to see our website without having to log in 
@@ -264,8 +264,8 @@ app.get('/saveGame', (req,res) => {
       dataType: 'text',
       headers: {
           
-          "Client-ID": " 5nphybqacwmj6kh3m2m0hk3unjc1gn",
-          "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
+        "Client-ID": process.env.client_id,
+        "Authorization": process.env.authorization,
       },
       data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
       body: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
@@ -284,15 +284,11 @@ app.get('/saveGame', (req,res) => {
   });
   
   
-  // 11. GET /logout
-  app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/logout');
-  });
-
-
-
-
+// 11. GET /logout
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
 
 app.listen(3000);
 console.log("Server is listening on port 3000");
