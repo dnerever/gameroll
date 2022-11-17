@@ -38,8 +38,11 @@
         </div>
       </div>
       <div class="d-flex justify-content-between">
-        <form action="/saveGame" method="POST"><button type="submit" class="btn btn-danger btn-lg">Save Game</button><input type="hidden" /></form>
         <form action="/newGame" method="GET"><button type="submit" class="btn btn-primary btn-lg">New Game >>></button></form>
+        <form action="/saveGame" method="POST">
+          <button type="submit" class="btn btn-danger btn-lg">Save Game</button>
+          <input type="hidden" name="game_name" value= <%= results.data[0].name %>>
+        </form>
         
       </div>
     </div>
