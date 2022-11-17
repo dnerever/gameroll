@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { render } = require('ejs');
 const { response } = require('express');
+const { queryResult } = require('pg-promise');
 
 
 // database configuration
@@ -110,7 +111,7 @@ app.get('/home',(req, res) => {
               "Client-ID": "5nphybqacwmj6kh3m2m0hk3unjc1gn",
               "Authorization": "Bearer fewdbr1edvvqbiughfqnu7z0ibl0bj",
           },
-          data: "fields *; limit 3;",
+          data: query + " offset " + randomGameIds[0] + "; limit 2;", 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
