@@ -1,11 +1,11 @@
 head {
   background-color: rgb(52,52,52);
-  font-family: Verdana, sans-serif;
+  font-family: OCR A Std, monospace;
 }
 
 body {
     background-color: rgb(52,52,52);
-    font-family: Verdana, sans-serif;
+    font-family: OCR A Std, monospace;
   }
 
   h1 {
@@ -16,6 +16,6 @@ body {
   }
 
   p {
-    font-family: verdana;
+    font-family: OCR A Std, monospace;
     font-size: 20px;
   }
