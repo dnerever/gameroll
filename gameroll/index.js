@@ -74,7 +74,7 @@ app.get('/', (req, res) =>{
 // });
 let count = 0;
 
-
+// reworked random game generator for a smoother run, also fixed some erros while implementing some code for profile page
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
@@ -230,6 +230,7 @@ app.post('/register', async (req, res) => {
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
+    //Creates message when user is not signed in
     return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
   }
   next();
@@ -270,6 +271,7 @@ app.use(auth);
    db.any('SELECT * from games')
       .then(games => {
           console.log(games);
+          //test data- can be removed when database is fully implemented
           games = [
             {
               name: 'Hi',
