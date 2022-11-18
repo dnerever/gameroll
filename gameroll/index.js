@@ -73,13 +73,15 @@ app.get('/', (req, res) =>{
 //   res.render('pages/home');
 // });
 let count = 0;
-app.get('/home',(req, res) => {
-  console.log("\n---NEW /home call---\n");
+
+
+async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
 
 
-  axios({   //We should move this call out of /home so that it is only called once when starting
+
+  await axios({   //We should move this call out of /home so that it is only called once when starting
     url: `https://api.igdb.com/v4/games/count`,
         method: 'POST',
         dataType:'text',
@@ -89,7 +91,8 @@ app.get('/home',(req, res) => {
         },
         data: query,  //Base query to return the number of games that match our criteria
     })
-    .then(results => {
+    .then( results => {
+    
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
       //return count;
@@ -105,8 +108,16 @@ app.get('/home',(req, res) => {
   for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
     randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
   }
-
   console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
+  return randomGameIds[0];
+
+
+}
+app.get('/home',async (req, res) => {
+  console.log("\n---NEW /home call---\n");
+  const game_id = req.query.game_id ?? await getRandomId();
+  var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
+  
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
@@ -115,7 +126,7 @@ app.get('/home',(req, res) => {
               "Client-ID": process.env.client_id,
               "Authorization": process.env.authorization,
           },
-          data: query + " offset " + randomGameIds[0] + "; limit 2;", 
+          data: `${query} offset  ${game_id} ; limit 2;`, 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -123,6 +134,7 @@ app.get('/home',(req, res) => {
           res.render('pages/home', {
             results: results,
             //count: count,   //Not being used on the home page
+            message: req.query.message
       });
       })
       .catch(error => {
@@ -218,7 +230,7 @@ app.post('/register', async (req, res) => {
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
-    return res.redirect('/home');
+    return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
   }
   next();
 };
@@ -255,21 +267,17 @@ app.get('/nextGame', (req,res) => {
 app.use(auth);
 
   app.get('/profile', (req, res) => {
-    axios({
-      url: "https://api.igdb.com/v4/games",
-      method: 'POST',
-      dataType: 'text',
-      headers: {
-          
-        "Client-ID": process.env.client_id,
-        "Authorization": process.env.authorization,
-      },
-      data: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
-      body: "fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 1",
-    })
+   db.any('SELECT * from games')
       .then(games => {
-          console.log(games.data);
-        res.render('pages/profile', {games: data})
+          console.log(games);
+          games = [
+            {
+              name: 'Hi',
+              game_id: 1,
+
+            }
+          ]
+        res.render('pages/profile', {games})
         })
       .catch(err => {
           res.render('pages/profile',{
