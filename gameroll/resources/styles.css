@@ -1,11 +1,8 @@
-head {
-  background-color: rgb(52,52,52);
-  font-family: OCR A Std, monospace;
-}
+
 
 body {
     background-color: rgb(52,52,52);
-    font-family: OCR A Std, monospace;
+    font-family: 'Press Start 2P', sans-serif;
   }
 
   h1 {
@@ -15,7 +12,6 @@ body {
     letter-spacing: 5px;
   }
 
-  p {
-    font-family: OCR A Std, monospace;
-    font-size: 20px;
+  p{
+  /* font-size: 20px; */
   }
