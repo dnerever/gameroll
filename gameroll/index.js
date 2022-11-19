@@ -58,8 +58,9 @@ app.use(
 // )
 
 //another attempt to link stylesheet
-app.use(express.static(__img + '/'));
+//app.use(express.static(__img + '/'));
 
+app.use(express.static("resources"));
 
 // 4. Get /
 app.get('/', (req, res) =>{
@@ -76,7 +77,7 @@ let count = 0;
 app.get('/home',(req, res) => {
   console.log("\n---NEW /home call---\n");
   var query = "fields name, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
-  var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
+  var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
 
 
   axios({   //We should move this call out of /home so that it is only called once when starting
@@ -102,11 +103,8 @@ app.get('/home',(req, res) => {
 
   console.log("---(Count - 1) after first call: " + (count - 1) + " ---");
 
-  for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
-    randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
-  }
+  randomGameId = Math.floor(Math.random() * (count -1));
 
-  console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
   axios({
       url: `https://api.igdb.com/v4/games`,
           method: 'POST',
@@ -115,7 +113,7 @@ app.get('/home',(req, res) => {
               "Client-ID": process.env.client_id,
               "Authorization": process.env.authorization,
           },
-          data: query + " offset " + randomGameIds[0] + "; limit 2;", 
+          data: query + " offset " + randomGameId + "; limit 2;", 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -251,13 +249,15 @@ app.get('/nextGame', (req,res) => {
 
 app.post('/saveGame', (req,res) => {
   console.log("helloa!!");
-  console.log(req.session.user);
+  //console.log(req.session.user);
     if (req.session.user){
-      //save game
-
+      console.log("/saveGame User: ");
+      console.log(req.session.user.email);
+      //res.render('pages/profile');
     } else {
       res.render('pages/login', {message : 'Need to sign in to access this page'});
     }
+    return;
 });
 
 // We don't want this because we want users to be able to see our website without having to log in 

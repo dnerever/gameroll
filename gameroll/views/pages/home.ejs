@@ -2,6 +2,9 @@
 <%- include ('../partials/menu') %>
 <div class="col"><%- include ('../partials/message') %></div>
 
+<head>
+  <link rel="stylesheet" href="css/style.css">
+</head>
 <main>
   <div class="container">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
@@ -9,10 +12,10 @@
     <!-- <h2> testing if the page will work</h2> -->
     <div class="py-4">
 
-      <div class="card text-dark bg-light mb-3" style="max-width: 800px;">
-        <h3 class="card-header">Game Title: <%= results.data[0].name %></h3>
-        <img src="<%= results.data[0].screenshots[0].url %>" class="img-thumbnail" alt="..." width="300">
-        <div class="card-body">
+      <div class="card text-light mb-3" style="max-width: 800px;">
+        <h3 class="card-header gameHeader">Game Title: <%= results.data[0].name %></h3>
+        <img src="<%= results.data[0].screenshots[0].url %>" class="img-fluid rounded mx-auto" alt="..." width="300">
+        <div class="card-body gameBody">
           <!-- Game description here: -->
           <p>Game Stats:</p>
           <% if(results.data[0].genres != null){ %>

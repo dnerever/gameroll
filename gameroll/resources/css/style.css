@@ -1,0 +1,30 @@
+head {
+  background-color: rgb(52,52,52);
+  font-family: Verdana, sans-serif;
+}
+
+body {
+  background-color: rgb(52,52,52);
+  font-family: Verdana, sans-serif;
+}
+
+.card {
+  background-color: rgb(52,52,52);
+  font-family: Verdana, sans-serif;
+}
+
+h1 {
+  color: rgb(52,52,52);
+  text-align: center;
+  text-decoration-line: overline;
+  letter-spacing: 5px;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+.gameHeader {
+  background-color: rgb(211, 153, 4);
+}
