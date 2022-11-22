@@ -9,7 +9,7 @@ body {
 }
 
 .card {
-  background-color: rgb(52,52,52);
+  background-color: rgb(175, 7, 7);
   font-family: Verdana, sans-serif;
 }
 
@@ -26,5 +26,9 @@ p {
 }
 
 .gameHeader {
+  background-color: rgb(211, 153, 4);
+}
+
+.gameBody {
   background-color: rgb(211, 153, 4);
 }
