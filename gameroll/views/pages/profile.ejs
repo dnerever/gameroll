@@ -4,18 +4,16 @@
 <main>
     <div class="container">
         <h1>My Profile</h1>
-            <p>Welcome User</p>
-        <h3>My Saved Games</h3>
+            <h3>Welcome User!</h3>
+        <h5>My Saved Games</h5>
       <!-- THE REST OF YOUR HTML CODE GOES HERE -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
           <% games.forEach(game => { %>
           <div class="col">
             <div class="card">
-              <img src="<%= game.cover %> " class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title"><%= game.name %> </h5>
-                <h4 class ="card-body"><%= game.storyline %></h4>
-                <h3 class="card-body"> <span> Game genre: <%= game.genres%></span><br><span>Game rating: <%= game.release_dates%></span></h3>
+                <a href="/home?game_id=<%=game.game_id%>">More info</a>
 
               </div>
               

@@ -45,6 +45,7 @@
         <form action="/saveGame" method="POST">
           <button type="submit" class="btn btn-danger btn-lg">Save Game</button>
           <input type="hidden" name="game_name" value= <%= results.data[0].name %>>
+          <input type="hidden" name="genre" value= <%= results.data[0].name %>>
         </form>
         
       </div>
