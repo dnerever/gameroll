@@ -8,7 +8,8 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS users_to_games CASCADE;
 CREATE TABLE users_to_games(
   user_id INT NOT NULL,
-  game_id INT NOT NULL
+  game_id INT,
+  game_name VARCHAR(300)
 );
 
 DROP TABLE IF EXISTS games CASCADE;

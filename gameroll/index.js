@@ -263,18 +263,18 @@ app.get('/nextGame', (req,res) => {
   });
 });
 
-app.post('/saveGame', (req,res) => {
-  console.log("helloa!!");
-  //console.log(req.session.user);
-    if (req.session.user){
-      console.log("/saveGame User: ");
-      console.log(req.session.user.email);
-      //res.render('pages/profile');
-    } else {
-      res.render('pages/login', {message : 'Need to sign in to access this page'});
-    }
-    return;
-});
+// app.post('/saveGame', (req,res) => {
+//   console.log("helloa!!");
+//   //console.log(req.session.user);
+//     if (req.session.user){
+//       console.log("/saveGame User: ");
+//       console.log(req.session.user.email);
+//       //res.render('pages/profile');
+//     } else {
+//       res.render('pages/login', {message : 'Need to sign in to access this page'});
+//     }
+//     return;
+// });
 
 // We don't want this because we want users to be able to see our website without having to log in 
 // // Authentication Required
@@ -305,10 +305,11 @@ app.use(auth);
 
 app.post('/saveGame', (req,res) => {
 
-  const query = `INSERT INTO games(game_name) VALUES ($1);`;
+  const query = `INSERT INTO user_to_games(user_id, game_name) VALUES ($1,$2);`;
 
-  db.any(query, [
-    req.body.game_name
+  db.one(query, [
+    req.session.user.user_id,
+    game_name
   ])
   .then(data => {
     res.redirect('/home');
