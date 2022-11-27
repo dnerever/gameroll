@@ -203,21 +203,6 @@ app.post('/login', async(req, res) => {
 });
 
 
-
-app.post('/register', async (req, res) => {
-
-  // hash to be used/tested later
-  // const hash = await bcrypt.hash(req.body.password, 10);
-
-  const query = `INSERT INTO users (email, password) VALUES ($1, $2);`;
-
-  db.any(query, [
-    req.body.email,
-    req.body.passsword // change to 'hash' later when hashing passwords is implemented
-  ])
-});
-
-
   
 // 9. Authentication middleware
 
@@ -225,7 +210,8 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
     //Creates message when user is not signed in
-    return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
+    return res.redirect('/home');
+    // return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
   }
   next();
 };
