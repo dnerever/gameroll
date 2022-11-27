@@ -9,29 +9,26 @@ const { render } = require('ejs');
 const { response } = require('express');
 const { queryResult } = require('pg-promise');
 
-
-
 // database configuration
 const dbConfig = {
-    host: 'db',
-    port: 5432,
-    database: process.env.POSTGRES_DB,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-  };
+  host: 'db',
+  port: 5432,
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+};
   
-  const db = pgp(dbConfig);
+const db = pgp(dbConfig);
   
-  // test your database
-  db.connect()
-    .then(obj => {
-      console.log('Database connection successful'); // you can view this message in the docker compose logs
-      obj.done(); // success, release the connection;
-    })
-    .catch(error => {
-      console.log('ERROR:', error.message || error);
-    });
-
+// test your database
+db.connect()
+  .then(obj => {
+    console.log('Database connection successful'); // you can view this message in the docker compose logs
+    obj.done(); // success, release the connection;
+  })
+  .catch(error => {
+    console.log('ERROR:', error.message || error);
+  });
 
 // 3. App settings
 app.set('view engine', 'ejs');
@@ -45,34 +42,23 @@ app.use(
       resave: false,
     })
   );
-  
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
 
-//trying to link css stylesheet -- does not work
-// app.use(
-//   express.static(_dirname)
-// )
+app.use(express.static("resources"));   //Links css stylesheet
 
-//another attempt to link stylesheet
-//app.use(express.static(__dirname + '/'));
-//app.use(express.static(__img + '/'));
-
-app.use(express.static("resources"));
-
-// 4. Get /
+// Get empty route to redirect to /home
 app.get('/', (req, res) =>{
   res.redirect('pages/home');
 });
 
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
-  var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
-
-
+  var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
 
   await axios({   //We should move this call out of /home so that it is only called once when starting
     url: `https://api.igdb.com/v4/games/count`,
@@ -94,17 +80,10 @@ async function getRandomId(){
     // Handle errors
       console.log("Error with initial API count call.")
   });
-  
 
-  console.log("---(Count - 1) after first call: " + (count - 1) + " ---");
+  randomGameId = Math.floor(Math.random() * (count -1));
 
-  for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
-    randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
-  }
-  console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
-  return randomGameIds[0];
-
-
+  return randomGameId;
 }
 
 app.get('/home',async (req, res) => {
@@ -124,10 +103,8 @@ app.get('/home',async (req, res) => {
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
-          // Send some parameters
-          res.render('pages/home', {
+          res.render('pages/home', {    //Parameters being sent
             results: results,
-            //count: count,   //Not being used on the home page
             message: req.query.message
       });
       })
@@ -140,12 +117,10 @@ app.get('/home',async (req, res) => {
     });
 });
 
-
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
 
-// 6. POST /register
 // Register submission
 app.post('/register', async (req, res) => {
     console.log("post register");
@@ -166,12 +141,11 @@ app.post('/register', async (req, res) => {
     })
   });
 
-// 7. GET /login
-  app.get('/login', (req, res) => {
-    res.render('pages/login');
-  });
+// login route
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+});
 
-// 8. POST /login
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
@@ -202,13 +176,8 @@ app.post('/login', async(req, res) => {
     });
 });
 
-
-
 app.post('/register', async (req, res) => {
-
-  // hash to be used/tested later
-  // const hash = await bcrypt.hash(req.body.password, 10);
-
+  // const hash = await bcrypt.hash(req.body.password, 10);   // hash to be used/tested later
   const query = `INSERT INTO users (email, password) VALUES ($1, $2);`;
 
   db.any(query, [
@@ -217,10 +186,7 @@ app.post('/register', async (req, res) => {
   ])
 });
 
-
-  
-// 9. Authentication middleware
-
+// Authentication middleware
 const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
@@ -247,8 +213,7 @@ app.get('/nextGame', async (req,res) => {
     then(results => {
       res.render('pages/randomHome', {results: results.data[rand]})
     })
-    .catch(error => {
-    // Handle errors
+    .catch(error => {   // Handle errors
       res.render('pages/home', {
         results: [],
         message: error.message || error
@@ -275,29 +240,27 @@ app.use(auth);
 
   app.get('/profile', (req, res) => {
    db.any('SELECT * from games')
-      .then(games => {
-          console.log(games);
-          //test data- can be removed when database is fully implemented
-          games = [
-            {
-              name: 'Hi',
-              game_id: 1,
-
-            }
-          ]
-        res.render('pages/profile', {games})
-        })
-      .catch(err => {
-          res.render('pages/profile',{
-            games: [],
-            message: err.message || err
-          });
-          
-      });
-  });
+    .then(games => {
+        console.log(games);
+        //test data- can be removed when database is fully implemented
+        games = [
+          {
+            name: 'Hi',
+            game_id: 1,
+          }
+        ]
+      res.render('pages/profile', {games})
+    })
+    .catch(err => {
+        res.render('pages/profile',{
+          games: [],
+          message: err.message || err
+        });
+        
+    });
+});
 
 app.post('/saveGame', (req,res) => {
-
   const query = `INSERT INTO user_to_games(user_id, game_name) VALUES ($1,$2);`;
 
   db.one(query, [
@@ -314,9 +277,8 @@ app.post('/saveGame', (req,res) => {
   })
   
 });
-  
-  
-// 11. GET /logout
+
+// logout route
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/logout');
