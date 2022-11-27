@@ -65,19 +65,14 @@ app.use(express.static("resources"));
 
 // 4. Get /
 app.get('/', (req, res) =>{
-  // res.redirect('/home'); //this will call the /anotherRoute route in the API
   res.redirect('pages/home');
 });
 
-// app.get('/home', (req, res) =>{
-//   // res.redirect('/home'); //this will call the /anotherRoute route in the API
-//   /* Changed for de-bugging purposes only - Kevin */
-//   res.render('pages/home');
-// });
-let count = 0;
-app.get('/home',(req, res) => {
+async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
-  var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
+  var randomGameIds = new Array(5);   //Creates a new blank array of 5 objects to store random game positions
+
+
 
   await axios({   //We should move this call out of /home so that it is only called once when starting
     url: `https://api.igdb.com/v4/games/count`,
@@ -103,16 +98,15 @@ app.get('/home',(req, res) => {
 
   console.log("---(Count - 1) after first call: " + (count - 1) + " ---");
 
-  randomGameId = Math.floor(Math.random() * (count -1));
-
-  // for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
-  //   randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
-  // }
-  // console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
-  // return randomGameIds[0];
+  for (let i = 0; i < randomGameIds.length; i++) {    //Loop fills the array
+    randomGameIds[i] = Math.floor(Math.random() * (count -1));    //Sets each value of the array to a random number between 0 and the last position of the game
+  }
+  console.log("---RandomGameIds Initialized: [0]:" + randomGameIds[0] + ", [1]: " + randomGameIds[1] + ", [2]: " + randomGameIds[2] + ", [3]: " + randomGameIds[3] + ", [4]: " + randomGameIds[4] + " ---");
+  return randomGameIds[0];
 
 
-});
+}
+
 app.get('/home',async (req, res) => {
   console.log("\n---NEW /home call---\n");
   const game_id = req.query.game_id ?? await getRandomId();
@@ -126,8 +120,7 @@ app.get('/home',async (req, res) => {
               "Client-ID": process.env.client_id,
               "Authorization": process.env.authorization,
           },
-          data: query + " offset " + randomGameId + "; limit 1;", 
-          //data: `${query} offset  ${game_id} ; limit 2;`,
+          data: `${query} offset  ${game_id} ; limit 2;`, 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -237,9 +230,9 @@ const auth = (req, res, next) => {
   next();
 };
 
-app.get('/nextGame', (req,res) => {
-  
-  var rand = Math.round(10000 * Math.random());
+app.get('/nextGame', async (req,res) => {
+  const randomGameId = req.query.game_id ?? await getRandomId();
+  //var rand = Math.round( * Math.random());
 
   axios({
     url: `https://api.igdb.com/v4/games`,
