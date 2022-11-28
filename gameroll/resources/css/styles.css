@@ -13,16 +13,17 @@ div{
   background-color: rgb(52,52,52);
 }
 
-h1 {
+h1, h2{
   color: rgb(224, 223, 223);
   text-align: center;
-  text-decoration-line: overline;
+  /* text-decoration-line: overline; */
   letter-spacing: 5px;
   font: 'OCR A Std, monospace';
 }
 
 .card{
   background-color: rgb(211, 153, 4);
+  align-content: center;
 }
 
 .gameHeader, .gameBody{
