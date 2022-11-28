@@ -31,7 +31,7 @@ db.connect()
     console.log('ERROR:', error.message || error);
   });
 
-// 3. App settings
+// App settings
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
@@ -91,7 +91,7 @@ async function getRandomId(){
 }
 
 app.get('/home',async (req, res) => {
-  console.log("\n---NEW /home call---\n");
+  //console.log("---/home call---\n");
   const game_id = req.query.game_id ?? await getRandomId();
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   
@@ -127,23 +127,42 @@ app.get('/register', (req, res) => {
 
 // Register submission
 app.post('/register', async (req, res) => {
-    console.log("post register");
-    // const test = await db.query("SELECT * FROM users;")
-    // console.log(test)
-    // const name = req.body.username;
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const query = "INSERT INTO users(email, password) VALUES ($1, $2);";
-    db.any(query, [
-      req.body.email,
-      hash
-    ])
-    .then(function (data) {
+  console.log("register-post:");
+  // const test = await db.query("SELECT * FROM users;")
+  // console.log(test)
+  // const name = req.body.username;
+  const hash = await bcrypt.hash(req.body.password, 10);
+  const searchQuery = `SELECT * FROM users WHERE email = $1;`;
+  const insertQuery = "INSERT INTO users(email, password) VALUES ($1, $2);";
+  
+  db.any(searchQuery, [
+    req.body.email
+  ])
+  .then(function (data) {
+    console.log("Rows: " + data.length);
+    if(data.length != 0){
+      //console.log("Email already in db")
+      res.render('pages/register', {message:"Already have an account, please login"});
+    }
+    else{
+      db.any(insertQuery, [
+        req.body.email,
+        hash
+      ])
+      .then(function (data) {
         res.redirect('/login');
-    })
-    .catch(function (err) {
-        res.render('pages/register',{message:"Error"});
-    })
-  });
+      })
+      .catch(function (err) {
+        res.render('pages/register',{message:"Error saving user"});
+      })
+    }
+  })
+  .catch(function (err) {
+    console.log(".catch err for rows");
+    //res.render('pages/register',{message:"Error checking if account was already present"});
+  })
+  
+});
 
 // login route
 app.get('/login', (req, res) => {
