@@ -14,7 +14,9 @@ CREATE TABLE games(
 
 DROP TABLE IF EXISTS users_to_games CASCADE;
 CREATE TABLE users_to_games(
+  user_id INT,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
+  game_id INT,
   FOREIGN KEY (game_id) REFERENCES games(game_id)
 );
 
