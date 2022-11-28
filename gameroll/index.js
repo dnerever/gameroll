@@ -60,8 +60,9 @@ app.get('/', (req, res) =>{
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
+   //We should move this call out of /home so that it is only called once when starting
   
-  const count = await axios({   
+  await axios({   
     url: `https://api.igdb.com/v4/games/count`,
         method: 'POST',
         dataType:'text',
@@ -72,9 +73,10 @@ async function getRandomId(){
         data: query,  //Base query to return the number of games that match our criteria
     })
     .then( results => {
-    
+
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
+      //return count;
       return count;
     })
     .catch(error => {
@@ -84,7 +86,7 @@ async function getRandomId(){
   });
 
   randomGameId = Math.floor(Math.random() * (count -1));
-
+  
   return randomGameId;
 }
 
