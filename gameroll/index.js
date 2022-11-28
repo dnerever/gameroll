@@ -179,11 +179,8 @@ app.post('/login', async(req, res) => {
 });
 
 
-<<<<<<< HEAD
   
 // 9. Authentication middleware
-=======
->>>>>>> a58447042723c18901b2f0b4b1e1b1208b6d19e4
 
 const auth = (req, res, next) => {
   if (!req.session.user) {
@@ -249,7 +246,6 @@ app.use(auth);
 
 app.post('/saveGame', (req,res) => {
 
-<<<<<<< HEAD
   db.tx(async (t) => {
     await t.none(
       `INSERT INTO games(game_id, game_name) VALUES ($1, $2);`, 
@@ -262,13 +258,6 @@ app.post('/saveGame', (req,res) => {
     );
   })
   .then(d => {
-=======
-  db.one(query, [
-    req.session.user.user_id,
-    req.body.game_name
-  ])
-  .then(data => {
->>>>>>> a58447042723c18901b2f0b4b1e1b1208b6d19e4
     res.redirect('/home');
     console.log("Game name added to data base");
   })
