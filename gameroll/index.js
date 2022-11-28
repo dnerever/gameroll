@@ -163,6 +163,7 @@ app.post('/login', async(req, res) => {
     ])
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
+      console.log("match = " + match + "; req.body.password = " + req.body.password + "; user.password " + user.password);
       if(match){
         req.session.user = {
           user_id: process.env.USER_ID,
@@ -176,6 +177,7 @@ app.post('/login', async(req, res) => {
     })
     .catch(function(err){
       res.redirect('/register');
+      console.log("!!  Login Error  !!")
       return console.log(err);
     });
 });
