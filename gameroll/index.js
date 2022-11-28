@@ -53,7 +53,7 @@ app.use(express.static("resources"));   //Links css stylesheet
 
 // Get empty route to redirect to /home
 app.get('/', (req, res) =>{
-  res.redirect('pages/home');
+  res.redirect('/home');
 });
 
 async function getRandomId(){
@@ -221,20 +221,8 @@ app.get('/nextGame', async (req,res) => {
   });
 });
 
-// app.post('/saveGame', (req,res) => {
-//   console.log("helloa!!");
-//   //console.log(req.session.user);
-//     if (req.session.user){
-//       console.log("/saveGame User: ");
-//       console.log(req.session.user.email);
-//       //res.render('pages/profile');
-//     } else {
-//       res.render('pages/login', {message : 'Need to sign in to access this page'});
-//     }
-//     return;
-// });
 
-// We don't want this because we want users to be able to see our website without having to log in 
+
 // // Authentication Required
 app.use(auth);
 
@@ -265,7 +253,7 @@ app.post('/saveGame', (req,res) => {
 
   db.one(query, [
     req.session.user.user_id,
-    game_name
+    req.body.game_name
   ])
   .then(data => {
     res.redirect('/home');
