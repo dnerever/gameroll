@@ -103,7 +103,7 @@ app.get('/home',async (req, res) => {
               "Client-ID": process.env.client_id,
               "Authorization": process.env.authorization,
           },
-          data: `${query} offset  ${game_id} ; limit 2;`, 
+          data: `${query} offset  ${game_id} ; limit 1;`, 
       })
       .then(results => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
@@ -139,7 +139,7 @@ app.post('/register', async (req, res) => {
     req.body.email
   ])
   .then(function (data) {
-    console.log("Rows: " + data.length);
+    //console.log("Rows: " + data.length);
     if(data.length != 0){
       //console.log("Email already in db")
       res.render('pages/register', {message:"Already have an account, please login"});
@@ -181,7 +181,6 @@ app.post('/login', async(req, res) => {
     ])
     .then(async (user)=> {
       const match = await bcrypt.compare(req.body.password, user.password)
-      console.log("match = " + match + "; req.body.password = " + req.body.password + "; user.password " + user.password);
       if(match){
         req.session.user = {
           user_id: process.env.USER_ID,
@@ -189,8 +188,9 @@ app.post('/login', async(req, res) => {
         req.session.save();
         res.redirect('/home');
       }else{
-        res.redirect('/login');
-        res.render('pages/login', {message : 'Need to sign in to access this page'});
+        //res.redirect('/login');
+        //console.log("Wrong Password on login");
+        res.render('pages/login', {message:"Password is incorrect, please try again"});
       }
     })
     .catch(function(err){
@@ -226,10 +226,10 @@ app.get('/nextGame', async (req,res) => {
           "Client-ID": process.env.client_id,
           "Authorization": process.env.authorization,
         },
-        data: "fields *, screenshots.*; limit 3;",
+        data: "fields *, screenshots.*; limit 1;",
     })
     then(results => {
-      res.render('pages/randomHome', {results: results.data[rand]})
+      res.render('pages/randomHome', {results: results.data})
     })
     .catch(error => {   // Handle errors
       res.render('pages/home', {
@@ -243,26 +243,24 @@ app.get('/nextGame', async (req,res) => {
 
 // // Authentication Required
 app.use(auth);
-
   app.get('/profile', (req, res) => {
-   db.any('SELECT * from games')
+   db.any('SELECT * FROM games;')
     .then(games => {
-        console.log(games);
-        //test data- can be removed when database is fully implemented
-        games = [
-          {
-            name: 'Hi',
-            game_id: 1,
-          }
-        ]
+      console.log(games);
+      //test data- can be removed when database is fully implemented
+      games = [
+        {
+          name: 'Hi',
+          game_id: 1,
+        }
+      ]
       res.render('pages/profile', {games})
     })
     .catch(err => {
-        res.render('pages/profile',{
-          games: [],
-          message: err.message || err
-        });
-        
+      res.render('pages/profile',{
+        games: [],
+        message: err.message || err
+      }); 
     });
 });
 
@@ -280,12 +278,12 @@ app.post('/saveGame', (req,res) => {
     );
   })
   .then(d => {
-    res.redirect('/profile');
-    console.log("Game name added to data base");
+    console.log("Game name added to database");
+    //res.redirect('/profile');
   })
   .catch(err => {
-    res.redirect('/home');
     console.log(err);
+    res.redirect('/home');
   })
   
 });
