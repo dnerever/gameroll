@@ -14,3 +14,7 @@ h1 {
 p{
 /* font-size: 20px; */
 }
+
+.gameHeader, .gameBody{
+  background-color: rgb(211, 153, 4);
+}
