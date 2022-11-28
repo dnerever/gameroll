@@ -50,7 +50,7 @@ app.use(
   })
 );
 
-app.use(express.static("resources"));   //Links css stylesheet
+app.use(express.static(__dirname));   //Links css stylesheet
 
 // Get empty route to redirect to /home
 app.get('/', (req, res) =>{
