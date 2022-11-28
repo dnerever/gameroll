@@ -1,6 +1,16 @@
+.navbarclass * {
+  background-color: rgb(201,76,48);
+}
+
 body {
   background-color: rgb(52,52,52);
-  font-family: 'Press Start 2P', Verdana, sans-serif;
+  /* font-family: 'Press Start 2P', Verdana, sans-serif; */
+  color: rgb(255,255,255);
+  font: 'OCR A Std, monospace';
+}
+
+div{
+  background-color: rgb(52,52,52);
 }
 
 h1 {
@@ -8,6 +18,7 @@ h1 {
   text-align: center;
   text-decoration-line: overline;
   letter-spacing: 5px;
+  font: 'OCR A Std, monospace';
 }
 
 .card{
@@ -16,4 +27,9 @@ h1 {
 
 .gameHeader, .gameBody{
   background-color: rgb(211, 153, 4);
+}
+
+p{
+  color: rgb(224, 223, 223);
+  font: 'OCR A Std, monospace';
 }
