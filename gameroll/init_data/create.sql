@@ -20,9 +20,9 @@ CREATE TABLE users_to_games(
   FOREIGN KEY (game_id) REFERENCES games(game_id)
 );
 
-DROP TABLE IF EXISTS game_genres CASCADE;
-CREATE TABLE game_genres(
-    table_id INT PRIMARY KEY,
-    genre_id INT NOT NULL,
-    name VARCHAR(100) NOT NULL
-);
+-- DROP TABLE IF EXISTS game_genres CASCADE;
+-- CREATE TABLE game_genres(
+--     table_id INT PRIMARY KEY,
+--     genre_id INT NOT NULL,
+--     name VARCHAR(100) NOT NULL
+-- );
