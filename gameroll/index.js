@@ -180,23 +180,22 @@ app.post('/login', async(req, res) => {
       password
     ])
     .then(async (user)=> {
-      const match = await bcrypt.compare(req.body.password, user.password)
-      if(match){
+      const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+
+      if(passwordMatch){  //checks that password is correct
         req.session.user = {
           user_id: process.env.USER_ID,
         };
         req.session.save();
         res.redirect('/home');
       }else{
-        //res.redirect('/login');
-        //console.log("Wrong Password on login");
         res.render('pages/login', {message:"Password is incorrect, please try again"});
       }
     })
     .catch(function(err){
-      res.redirect('/register');
-      console.log("!!  Login Error  !!")
-      return console.log(err);
+      console.log("!!  Login Error  !!");
+      console.log(err);
+      return res.render('pages/login', {message:"Email is not recognized, please try again"});
     });
 });
 
