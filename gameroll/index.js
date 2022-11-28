@@ -9,6 +9,7 @@ const { render } = require('ejs');
 const { response } = require('express');
 const { queryResult } = require('pg-promise');
 
+
 // database configuration
 const dbConfig = {
   host: 'db',
@@ -59,8 +60,8 @@ app.get('/', (req, res) =>{
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
-
-  await axios({   //We should move this call out of /home so that it is only called once when starting
+  
+  const count = await axios({   
     url: `https://api.igdb.com/v4/games/count`,
         method: 'POST',
         dataType:'text',
@@ -74,11 +75,12 @@ async function getRandomId(){
     
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
-      //return count;
+      return count;
     })
     .catch(error => {
     // Handle errors
       console.log("Error with initial API count call.")
+      return 0;
   });
 
   randomGameId = Math.floor(Math.random() * (count -1));
