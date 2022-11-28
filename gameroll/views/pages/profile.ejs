@@ -2,28 +2,22 @@
 <%- include ('../partials/menu') %>
 <div class="col"><%- include ('../partials/message') %></div>
 <main>
-    <div class="container">
-        <h1>My Profile</h1>
-            <h3>Welcome User!</h3>
-        <h5>My Saved Games</h5>
-      <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-          <% games.forEach(game => { %>
-          <div class="col">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"><%= game.name %> </h5>
-                <a href="/home?game_id=<%=game.game_id%>">More info</a>
-
-              </div>
-              
+  <div class="container">
+      <h1>My Profile</h1>
+          <h3>Welcome User!</h3>
+      <h5>My Saved Games</h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% games.forEach(game => { %>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= game.name %> </h5>
+              <a href="/home?game_id=<%=game.game_id%>">More info</a>
             </div>
           </div>
-          <% }) %> 
-  
-    </div>
-    </div>
-  </main>
-
-
+        </div>
+        <% }) %>
+  </div>
+  </div>
+</main>
 <%- include ('../partials/footer') %>
