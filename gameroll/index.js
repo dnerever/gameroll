@@ -188,8 +188,8 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
     //Creates message when user is not signed in
-    return res.redirect('/home');
-    // return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
+    
+    return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
   }
   next();
 };
@@ -260,7 +260,7 @@ app.post('/saveGame', (req,res) => {
     );
   })
   .then(d => {
-    res.redirect('/home');
+    res.redirect('/profile');
     console.log("Game name added to data base");
   })
   .catch(err => {
