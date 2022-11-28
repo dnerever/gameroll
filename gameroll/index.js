@@ -161,7 +161,6 @@ app.post('/register', async (req, res) => {
     console.log(".catch err for rows");
     //res.render('pages/register',{message:"Error checking if account was already present"});
   })
-  
 });
 
 // login route
@@ -209,7 +208,7 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to register page.
     //Creates message when user is not signed in
-    
+
     return res.redirect(`/home?message=${'You need to register or log in to use this feature!'}`);
   }
   next();
