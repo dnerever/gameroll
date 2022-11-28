@@ -3,7 +3,6 @@ body {
   font-family: 'Press Start 2P', Verdana, sans-serif;
 }
 
-
 h1 {
   color: rgb(224, 223, 223);
   text-align: center;
@@ -11,9 +10,8 @@ h1 {
   letter-spacing: 5px;
 }
 
-
-p{
-/* font-size: 20px; */
+.card{
+  background-color: rgb(211, 153, 4);
 }
 
 .gameHeader, .gameBody{
