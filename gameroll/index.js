@@ -176,15 +176,7 @@ app.post('/login', async(req, res) => {
     });
 });
 
-app.post('/register', async (req, res) => {
-  // const hash = await bcrypt.hash(req.body.password, 10);   // hash to be used/tested later
-  const query = `INSERT INTO users (email, password) VALUES ($1, $2);`;
 
-  db.any(query, [
-    req.body.email,
-    req.body.passsword // change to 'hash' later when hashing passwords is implemented
-  ])
-});
 
 // Authentication middleware
 const auth = (req, res, next) => {
