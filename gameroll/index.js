@@ -9,6 +9,7 @@ const { render } = require('ejs');
 const { response } = require('express');
 const { queryResult } = require('pg-promise');
 
+
 // database configuration
 const dbConfig = {
   host: 'db',
@@ -53,14 +54,14 @@ app.use(express.static("resources"));   //Links css stylesheet
 
 // Get empty route to redirect to /home
 app.get('/', (req, res) =>{
-  res.redirect('pages/home');
+  res.redirect('/home');
 });
 
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
-
-  await axios({   //We should move this call out of /home so that it is only called once when starting
+  
+  const count = await axios({   
     url: `https://api.igdb.com/v4/games/count`,
         method: 'POST',
         dataType:'text',
@@ -74,11 +75,12 @@ async function getRandomId(){
     
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
-      //return count;
+      return count;
     })
     .catch(error => {
     // Handle errors
       console.log("Error with initial API count call.")
+      return 0;
   });
 
   randomGameId = Math.floor(Math.random() * (count -1));
@@ -177,8 +179,11 @@ app.post('/login', async(req, res) => {
 });
 
 
+<<<<<<< HEAD
   
 // 9. Authentication middleware
+=======
+>>>>>>> a58447042723c18901b2f0b4b1e1b1208b6d19e4
 
 const auth = (req, res, next) => {
   if (!req.session.user) {
@@ -215,20 +220,8 @@ app.get('/nextGame', async (req,res) => {
   });
 });
 
-// app.post('/saveGame', (req,res) => {
-//   console.log("helloa!!");
-//   //console.log(req.session.user);
-//     if (req.session.user){
-//       console.log("/saveGame User: ");
-//       console.log(req.session.user.email);
-//       //res.render('pages/profile');
-//     } else {
-//       res.render('pages/login', {message : 'Need to sign in to access this page'});
-//     }
-//     return;
-// });
 
-// We don't want this because we want users to be able to see our website without having to log in 
+
 // // Authentication Required
 app.use(auth);
 
@@ -256,6 +249,7 @@ app.use(auth);
 
 app.post('/saveGame', (req,res) => {
 
+<<<<<<< HEAD
   db.tx(async (t) => {
     await t.none(
       `INSERT INTO games(game_id, game_name) VALUES ($1, $2);`, 
@@ -268,6 +262,13 @@ app.post('/saveGame', (req,res) => {
     );
   })
   .then(d => {
+=======
+  db.one(query, [
+    req.session.user.user_id,
+    req.body.game_name
+  ])
+  .then(data => {
+>>>>>>> a58447042723c18901b2f0b4b1e1b1208b6d19e4
     res.redirect('/home');
     console.log("Game name added to data base");
   })
