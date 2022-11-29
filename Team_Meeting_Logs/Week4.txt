@@ -1,0 +1,14 @@
+Notes from meeting with Cory (11/28):
+Project Board:
+- ice box: user filters game recommendations, get higher resolution images
+- in progress: user profile page, functionality when the userf is logged in
+
+Release Notes:
+- Follow project notes and go through using automated commit notes.
+
+Presentation:
+- presentation slides still in thed making, but almost finished, will finish this week
+
+General Notes:
+- This week we are working on finishing the project, mainly focussing on the completion of the profile
+page and other finishing touches
