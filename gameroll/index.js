@@ -206,7 +206,10 @@ app.post('/login', async(req, res) => {
   .catch(function(err){
     console.log("!!  Login Error  !!");
     console.log(err);
-    return res.render('pages/login', {message:"Email is not recognized, please try again"});
+    return res.render('pages/login', {
+      loggedin: req.session.loggedin,
+      message:"Email is not recognized, please try again"
+    });
   });
 });
 
