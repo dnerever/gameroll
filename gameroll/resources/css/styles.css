@@ -1,6 +1,17 @@
+#footer {
+  height: 5vh;
+}
 .navbarclass * {
   background-color: rgb(201,76,48);
 }
+
+.main_wrapper {
+  height: 80vh;
+}
+
+/* .footer_wrapper {
+  height: 5vh;
+} */
 
 body {
   background-color: rgb(211, 153, 4);
