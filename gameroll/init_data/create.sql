@@ -10,7 +10,8 @@ CREATE TABLE games(
   game_id INT PRIMARY KEY,
   game_name TEXT,
   genre VARCHAR(200),
-  screenshots VARCHAR(200)
+  screenshots VARCHAR(200),
+  url VARCHAR(200)
 );
 
 

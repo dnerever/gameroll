@@ -1,5 +1,7 @@
 #footer {
   height: 5vh;
+  align-content: center;
+  text-align: center;
 }
 .navbarclass * {
   background-color: rgb(201,76,48);
@@ -24,7 +26,7 @@ div{
   background-color: rgb(211, 153, 4);
 }
 
-h1, h2{
+h1, h2, h3{
   color: rgb(224, 223, 223);
   text-align: center;
   /* text-decoration-line: overline; */

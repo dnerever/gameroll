@@ -200,7 +200,10 @@ app.post('/login', async(req, res) => {
       req.session.save();
       res.redirect('/home');
     }else{
-      res.render('pages/login', {message:"Password is incorrect, please try again"});
+      res.render('pages/login', {
+        loggedin: req.session.loggedin,
+        message:"Password is incorrect, please try again"
+      });
     }
   })
   .catch(function(err){
@@ -274,16 +277,16 @@ app.use(auth);
 });
 
 app.post('/saveGame', (req,res) => {
-
+  console.log("req.body.game_name: " + req.body.game_name);
   db.tx(async (t) => {
     await t.none(
-      `INSERT INTO games(game_id, genre, game_name, screenshots) VALUES ($1, $2, $3, $4);`, 
-      [req.body.game_id, req.body.genre, req.body.game_name, req.body.game_screenshots]
+      `INSERT INTO games(game_id, genre, game_name, screenshots, url) VALUES ($1, $2, $3, $4, $5);`, 
+      [req.body.game_id, req.body.genre, req.body.game_name, req.body.game_screenshots, req.body.url]
     );
 
     await t.none(
       `INSERT INTO users_to_games(user_id, game_id) VALUES ($1,$2);`,
-      [req.session.users.user_id, req.body.game_id]
+      [req.session.user.user_id, req.body.game_id]
     );
   })
   .then(d => {
