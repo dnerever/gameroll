@@ -228,7 +228,7 @@ app.get('/nextGame', async (req,res) => {
         data: "fields *, screenshots.*; limit 1;",
     })
     then(results => {
-      res.render('pages/randomHome', {results: results.data})
+      res.render('pages/home', {results: results.data})
     })
     .catch(error => {   // Handle errors
       res.render('pages/home', {
@@ -260,8 +260,8 @@ app.post('/saveGame', (req,res) => {
 
   db.tx(async (t) => {
     await t.none(
-      `INSERT INTO games(id, genre, name, screenshots) VALUES ($1, $2, $3, $4);`, 
-      [req.body.game_id, req.body.genre, req.body.game_name, req.body.screenshots]
+      `INSERT INTO games(game_id, genre, game_name, screenshots) VALUES ($1, $2, $3, $4);`, 
+      [req.body.game_id, req.body.genres, req.body.game_name, req.body.game_screenshots]
     );
 
     await t.none(

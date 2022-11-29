@@ -3,14 +3,14 @@
 }
 
 body {
-  background-color: rgb(52,52,52);
+  background-color: rgb(211, 153, 4);
   /* font-family: 'Press Start 2P', Verdana, sans-serif; */
   color: rgb(255,255,255);
   font: 'OCR A Std, monospace';
 }
 
 div{
-  background-color: rgb(52,52,52);
+  background-color: rgb(211, 153, 4);
 }
 
 h1, h2{
@@ -22,20 +22,24 @@ h1, h2{
 }
 
 .card{
-  background-color: rgb(211, 153, 4);
-  align-content: self;
+  background-color: rgb(201,76,48);
+  align-content: center;
 }
 
 .gameHeader{
   text-size-adjust: 340px;
-  background-color: rgb(211, 153, 4);
+  background-color: rgb(201,76,48);
 }
 
 .gameBody{
-  background-color: rgb(211, 153, 4);
+  background-color: rgb(201,76,48);
 }
 
 p{
   color: rgb(224, 223, 223);
   font: 'OCR A Std, monospace';
+}
+
+.alert {
+  max-width: 70rem;
 }
