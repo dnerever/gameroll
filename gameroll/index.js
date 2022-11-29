@@ -59,7 +59,7 @@ app.get('/', (req, res) =>{
 
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
-  var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
+  var randomGameId = 0;   //Creates single random position of game
    //We should move this call out of /home so that it is only called once when starting
   
   await axios({   
