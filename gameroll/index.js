@@ -37,12 +37,12 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 
 app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      saveUninitialized: false,
-      resave: false,
-    })
-  );
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
+);
 
 app.use(
   bodyParser.urlencoded({
@@ -109,7 +109,8 @@ app.get('/home',async (req, res) => {
           console.log(results.data); // the results will be displayed on the terminal if the docker containers are running
           res.render('pages/home', {    //Parameters being sent
             results: results,
-            message: req.query.message
+            message: req.query.message,
+            loggedin: req.session.loggedin
       });
       })
       .catch(error => {
@@ -122,7 +123,7 @@ app.get('/home',async (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.render('pages/register');
+  res.render('pages/register', {loggedin: req.session.loggedin});
 });
 
 // Register submission
@@ -142,7 +143,10 @@ app.post('/register', async (req, res) => {
     //console.log("Rows: " + data.length);
     if(data.length != 0){
       //console.log("Email already in db")
-      res.render('pages/register', {message:"Already have an account, please login"});
+      res.render('pages/register', {
+        message:"Already have an account, please login",
+        loggedin: req.session.loggedin
+      });
     }
     else{
       db.any(insertQuery, [
@@ -153,53 +157,63 @@ app.post('/register', async (req, res) => {
         res.redirect('/login');
       })
       .catch(function (err) {
-        res.render('pages/register',{message:"Error saving user"});
+        res.render('pages/register', {
+          message:"Error saving user",
+          loggedin: req.session.loggedin
+        });
       })
     }
   })
   .catch(function (err) {
     console.log(".catch err for rows");
-    //res.render('pages/register',{message:"Error checking if account was already present"});
+    res.render('pages/register', {
+      message:"Error checking if account was already present",
+      loggedin: req.session.loggedin
+    });
   })
 });
 
 // login route
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/login', {loggedin: req.session.loggedin});
 });
 
 // Login submission
 app.post('/login', async(req, res) => {
   console.log("post login");
-    const email = req.body.email;
-    const password = req.body.password;
-    const query = `SELECT * FROM users WHERE email = $1;`;
-    
-    db.one(query, [
-      email,
-      password
-    ])
-    .then(async (user)=> {
-      const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+  const email = req.body.email;
+  const password = req.body.password;
+  const query = `SELECT * FROM users WHERE email = $1;`;
+  
+  db.one(query, [
+    email,
+    password
+  ])
+  .then(async (user)=> {
+    const passwordMatch = await bcrypt.compare(req.body.password, user.password)
 
-      if(passwordMatch){  //checks that password is correct
-        req.session.user = {
-          user_id: process.env.USER_ID,
-        };
-        req.session.save();
-        res.redirect('/home');
-      }else{
-        res.render('pages/login', {message:"Password is incorrect, please try again"});
-      }
-    })
-    .catch(function(err){
-      console.log("!!  Login Error  !!");
-      console.log(err);
-      return res.render('pages/login', {message:"Email is not recognized, please try again"});
-    });
+    if(passwordMatch){  //checks that password is correct
+      req.session.user = {
+        user_id: process.env.USER_ID,
+      };
+      req.session.loggedin = true;
+      req.session.save();
+      res.redirect('/home');
+    }else{
+      res.render('pages/login', {message:"Password is incorrect, please try again"});
+    }
+  })
+  .catch(function(err){
+    console.log("!!  Login Error  !!");
+    console.log(err);
+    return res.render('pages/login', {message:"Email is not recognized, please try again"});
+  });
 });
 
-
+app.use(function (req, res, next) {
+  res.locals.loggedin = req.session.loggedin;
+  next();
+});
   
 // 9. Authentication middleware
 
@@ -283,7 +297,7 @@ app.post('/saveGame', (req,res) => {
 // logout route
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  res.render('pages/logout');
+  res.redirect('/home');
 });
 
 app.listen(3000);
