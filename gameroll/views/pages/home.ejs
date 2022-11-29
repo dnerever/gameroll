@@ -7,12 +7,12 @@
     <div class="py-4 w-100">
       <div class="card mb-3" >
         <div class="card-header gameHeader" id="gameHeader">
-          <h4>Game Title: <%= results.data[0].name %></h4>
+          <h4><%= results.data[0].name %></h4>
         </div>
         <img src="<%= results.data[0].screenshots[0].url %>" class="img-fluid rounded mx-auto" alt="Screenshot of the game" width="300">
         <div class="card-body gameBody">
           <!-- Game description here: -->
-          <p>Game Stats:</p>
+          <h5>Game info</h5>
           <% if(results.data[0].genres != null){ %>
             <p>Genre: <%= results.data[0].genres[0].name %></p>
           <% }%>
