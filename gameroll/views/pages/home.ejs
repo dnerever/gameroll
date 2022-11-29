@@ -5,9 +5,11 @@
 <main>
   <div class="container">
     <div class="py-4" style="max-width: 800px;">
-
       <div class="card mb-3" >
-        <h3 class="card-header gameHeader">Game Title: <%= results.data[0].name %></h3>
+        <div class="card-header gameHeader" id="gameHeader">
+          <h4>Game Title: <%= results.data[0].name %></h4>
+        </div>
+        <!-- <h3 class="card-header gameHeader">Game Title: <%= results.data[0].name %></h3> -->
         <img src="<%= results.data[0].screenshots[0].url %>" class="img-fluid rounded mx-auto" alt="..." width="300">
         <div class="card-body gameBody">
           <!-- Game description here: -->
@@ -24,7 +26,7 @@
           <% }%>
           <% if(results.data[0].url != null){ %>
             <p>
-              View on IGDB: <a href="<%=results.data[0].url %>" type="link">IGDB</a>
+              View on IGDB: <a href="<%=results.data[0].url %>" type="link" target="_blank" rel="noopener noreferrer">IGDB</a>
             </p>
           <% }%>
         </div>

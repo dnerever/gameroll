@@ -1,24 +1,10 @@
 <header class = "navbarclass">
-  <nav class="navbar navbar-expand-sm border-bottom">
-    <div class="container">
-      <button
-        class="navbar-toggler ms-auto"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbar-collapse"
-        aria-controls="navbar"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <div class="navbar-brand">
-          <img src="/resources/img/logo.png" width = 30 >
-        </div>
-        <ul class="navbar-nav me-auto">
+  <nav class="navbar navbar-expand-md border-bottom">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
-              <a class="nav-link" href="/home">Home</a>
+            <a class="nav-link" href="/home">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/profile">Profile</a>
@@ -33,7 +19,9 @@
             <a class="nav-link" href="/logout">Logout</a>
           </li>
         </ul>
-          
+      </div>
+      <div class="mx-auto order-0">
+        <img class="navbar-nav mx-auto" src="/resources/img/logoShortNoBgNoWhitespace.png" height = 30 >
       </div>
     </div>
   </nav>

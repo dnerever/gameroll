@@ -23,10 +23,15 @@ h1, h2{
 
 .card{
   background-color: rgb(211, 153, 4);
-  align-content: center;
+  align-content: self;
 }
 
-.gameHeader, .gameBody{
+.gameHeader{
+  text-size-adjust: 340px;
+  background-color: rgb(211, 153, 4);
+}
+
+.gameBody{
   background-color: rgb(211, 153, 4);
 }
 
