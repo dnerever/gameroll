@@ -1,16 +1,17 @@
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
-    user_id SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL
+  user_id SERIAL PRIMARY KEY,
+  email VARCHAR(100) NOT NULL,
+  password VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS games CASCADE;
 CREATE TABLE games(
-    game_id INT PRIMARY KEY,
-    game_name TEXT,
-    genre VARCHAR(200),
-    screenshots VARCHAR(200)    
+  game_id INT PRIMARY KEY,
+  game_name TEXT,
+  genre VARCHAR(200),
+  screenshots VARCHAR(200),
+  url VARCHAR(200)
 );
 
 

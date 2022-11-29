@@ -59,8 +59,8 @@ app.get('/', (req, res) =>{
 
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
-  var randomGameId = 0;   //Creates single random position of game
-   //We should move this call out of /home so that it is only called once when starting
+  var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
+  var count = 0;
   
   await axios({   
     url: `https://api.igdb.com/v4/games/count`,
@@ -73,7 +73,6 @@ async function getRandomId(){
         data: query,  //Base query to return the number of games that match our criteria
     })
     .then( results => {
-
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
       //return count;
@@ -116,6 +115,7 @@ app.get('/home',async (req, res) => {
       .catch(error => {
       // Handle errors
         res.render('pages/home', {
+          loggedin: req.session.loggedin,
           results: [],
           message: error.message || error
         });
@@ -200,7 +200,10 @@ app.post('/login', async(req, res) => {
       req.session.save();
       res.redirect('/home');
     }else{
-      res.render('pages/login', {message:"Password is incorrect, please try again"});
+      res.render('pages/login', {
+        loggedin: req.session.loggedin,
+        message:"Password is incorrect, please try again"
+      });
     }
   })
   .catch(function(err){
@@ -274,11 +277,11 @@ app.use(auth);
 });
 
 app.post('/saveGame', (req,res) => {
-
+  console.log("req.body.game_name: " + req.body.game_name);
   db.tx(async (t) => {
     await t.none(
-      `INSERT INTO games(game_id, genre, game_name, screenshots) VALUES ($1, $2, $3, $4);`, 
-      [req.body.game_id, req.body.genres, req.body.game_name, req.body.game_screenshots]
+      `INSERT INTO games(game_id, genre, game_name, screenshots, url) VALUES ($1, $2, $3, $4, $5);`, 
+      [req.body.game_id, req.body.genre, req.body.game_name, req.body.game_screenshots, req.body.url]
     );
 
     await t.none(
@@ -294,7 +297,6 @@ app.post('/saveGame', (req,res) => {
     console.log(err);
     res.redirect('/home');
   })
-  
 });
 
 // logout route
