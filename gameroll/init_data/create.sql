@@ -8,7 +8,9 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS games CASCADE;
 CREATE TABLE games(
     game_id INT PRIMARY KEY,
-    game_name VARCHAR(200)
+    game_name VARCHAR(200),
+    genre VARCHAR(200),
+    screenshots VARCHAR(200)    
 );
 
 

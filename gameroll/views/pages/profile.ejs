@@ -8,12 +8,14 @@
       <br>
       <h3>My Saved Games</h3>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <% games.forEach(game => { %>
+        <% games.forEach(games => { %>
         <div class="col">
           <div class="card">
+            <div class="card-header">
+              <h5 class="card-title"><%= games.game_name%> </h5>
+            </div>
             <div class="card-body">
-              <h5 class="card-title"><%= game.name %> </h5>
-              <a href="/home?game_id=<%=game.game_id%>">More info</a>
+              <a href="/home?game_id=<%=games.game_id%>">More info</a>
             </div>
           </div>
         </div>

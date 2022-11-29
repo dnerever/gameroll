@@ -246,13 +246,6 @@ app.use(auth);
    db.any('SELECT * FROM games;')
     .then(games => {
       console.log(games);
-      //test data- can be removed when database is fully implemented
-      games = [
-        {
-          name: 'Hi',
-          game_id: 1,
-        }
-      ]
       res.render('pages/profile', {games})
     })
     .catch(err => {
@@ -267,8 +260,8 @@ app.post('/saveGame', (req,res) => {
 
   db.tx(async (t) => {
     await t.none(
-      `INSERT INTO games(game_id, game_name) VALUES ($1, $2);`, 
-      [req.body.game_id, req.body.game_name]
+      `INSERT INTO games(id, genre, name, screenshots) VALUES ($1, $2, $3, $4);`, 
+      [req.body.game_id, req.body.genre, req.body.game_name, req.body.screenshots]
     );
 
     await t.none(
@@ -278,7 +271,7 @@ app.post('/saveGame', (req,res) => {
   })
   .then(d => {
     console.log("Game name added to database");
-    //res.redirect('/profile');
+    res.redirect('/home');
   })
   .catch(err => {
     console.log(err);
