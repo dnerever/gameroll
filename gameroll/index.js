@@ -60,7 +60,7 @@ app.get('/', (req, res) =>{
 async function getRandomId(){
   var query = "fields name, url, screenshots.*, release_dates.*, genres.*, platforms.*, summary ; where (summary != null & screenshots != null);";
   var randomGameId = 0;   //Creates a new blank array of 5 objects to store random game positions
-   //We should move this call out of /home so that it is only called once when starting
+  var count = 0;
   
   await axios({   
     url: `https://api.igdb.com/v4/games/count`,
@@ -73,7 +73,6 @@ async function getRandomId(){
         data: query,  //Base query to return the number of games that match our criteria
     })
     .then( results => {
-
       console.log("---Game Count Determined: " + results.data.count + "---"); // the results will be displayed on the terminal if the docker containers are running
       count = results.data.count;
       //return count;
@@ -116,6 +115,7 @@ app.get('/home',async (req, res) => {
       .catch(error => {
       // Handle errors
         res.render('pages/home', {
+          loggedin: req.session.loggedin,
           results: [],
           message: error.message || error
         });
@@ -206,7 +206,10 @@ app.post('/login', async(req, res) => {
   .catch(function(err){
     console.log("!!  Login Error  !!");
     console.log(err);
-    return res.render('pages/login', {message:"Email is not recognized, please try again"});
+    return res.render('pages/login', {
+      loggedin: req.session.loggedin,
+      message:"Email is not recognized, please try again"
+    });
   });
 });
 
@@ -275,12 +278,12 @@ app.post('/saveGame', (req,res) => {
   db.tx(async (t) => {
     await t.none(
       `INSERT INTO games(game_id, genre, game_name, screenshots) VALUES ($1, $2, $3, $4);`, 
-      [req.body.game_id, req.body.genres, req.body.game_name, req.body.game_screenshots]
+      [req.body.game_id, req.body.genre, req.body.game_name, req.body.game_screenshots]
     );
 
     await t.none(
       `INSERT INTO users_to_games(user_id, game_id) VALUES ($1,$2);`,
-      [req.session.user.user_id, req.body.game_id]
+      [req.session.users.user_id, req.body.game_id]
     );
   })
   .then(d => {
@@ -291,7 +294,6 @@ app.post('/saveGame', (req,res) => {
     console.log(err);
     res.redirect('/home');
   })
-  
 });
 
 // logout route
