@@ -320,6 +320,23 @@ app.post('/saveGame', (req,res) => {
   })
 });
 
+app.post('/deleteSavedGame', function (req,res) {
+  const query = `DELETE FROM users_to_games 
+  WHERE user_id = $1
+  AND game_id =$2;`;
+  db.any(query, [
+  req.session.user.user_id,
+  req.body.deleteID
+  ])
+  .then(function (data) {
+    console.log("Game deleted successfully");
+    res.redirect('/profile');
+  })
+  .catch(function (err) {
+    return console.log(err);
+  });
+})
+
 // logout route
 app.get('/logout', (req, res) => {
   req.session.destroy();

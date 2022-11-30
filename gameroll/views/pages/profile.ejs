@@ -17,6 +17,10 @@
           <div class="card">
             <div class="card-header">
               <h5 class="card-title"><%= games.game_name%> </h5>
+              <form action="/deleteSavedGame" method="POST">
+                <button type="submit" class="btn btn-danger btn-lg">X</button>
+                <input type="hidden" name="deleteID" value="<%= games.game_id %>">
+              </form>
             </div>
             <div class="card-body">
               <a href="<%=games.url%>" target="_blank" rel="noopener noreferrer">More info</a>
