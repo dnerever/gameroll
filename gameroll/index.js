@@ -20,6 +20,10 @@ const dbConfig = {
 };
   
 const db = pgp(dbConfig);
+
+const user = {
+  email: undefined,
+};
   
 // test your database
 db.connect()
@@ -189,15 +193,23 @@ app.post('/login', async(req, res) => {
     email,
     password
   ])
-  .then(async (user)=> {
-    const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+  .then(async (data) => {
+    const passwordMatch = await bcrypt.compare(req.body.password, data.password)
+
+    user.email = data.email;
+    user.user_id = data.user_id;
+
+    req.session.user = user;
 
     if(passwordMatch){  //checks that password is correct
-      req.session.user = {
-        user_id: process.env.USER_ID,
-      };
+
+      // req.session.user = {
+      //   user_id: process.env.USER_ID
+      // };
+      
       req.session.loggedin = true;
       req.session.save();
+      
       res.redirect('/home');
     }else{
       res.render('pages/login', {
@@ -263,7 +275,14 @@ app.get('/nextGame', async (req,res) => {
 // // Authentication Required
 app.use(auth);
   app.get('/profile', (req, res) => {
-   db.any('SELECT * FROM games;')
+   
+    const query = `SELECT * FROM games 
+    INNER JOIN users_to_games on games.game_id = users_to_games.game_id
+    WHERE users_to_games.user_id = $1;`;
+
+    db.any(query, [
+      req.session.user.user_id
+    ])
     .then(games => {
       console.log(games);
       res.render('pages/profile', {games})
@@ -291,6 +310,8 @@ app.post('/saveGame', (req,res) => {
   })
   .then(d => {
     console.log("Game name added to database");
+    console.log("User id: ");
+    console.log(req.session.user.user_id);
     res.redirect('/home');
   })
   .catch(err => {
