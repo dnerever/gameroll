@@ -17,8 +17,8 @@ CREATE TABLE games(
 
 DROP TABLE IF EXISTS users_to_games CASCADE;
 CREATE TABLE users_to_games(
-  user_id INT,
-  game_id INT
+  user_id INT REFERENCES users (user_id),
+  game_id INT REFERENCES games (game_id)
 );
 
 -- DROP TABLE IF EXISTS game_genres CASCADE;
