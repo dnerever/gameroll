@@ -1,0 +1,37 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
+<main>
+  <br>
+  
+    
+  <div class="container">
+    <h2>Saved Games</h2>
+    <br>
+    <table class = "table">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <tbody>  
+      <% games.forEach(games => { %>
+        <tr>
+        <div class="col py-2">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title"><%= games.game_name%> </h5>
+              <form action="/deleteSavedGame" method="POST">
+                <button type="submit" class="btn btn-danger btn-lg">X</button>
+                <input type="hidden" name="deleteID" value="<%= games.game_id %>">
+              </form>
+            </div>
+            <div class="card-body">
+              <a href="<%=games.url%>" target="_blank" rel="noopener noreferrer">More info</a>
+            </div>
+          </div>
+        </div>
+        </tr>
+        <% }) %>
+      </tbody>
+    </div>
+  </table>
+  </div>
+</main>
+<%- include ('../partials/footer') %>

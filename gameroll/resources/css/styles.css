@@ -1,0 +1,58 @@
+#footer {
+  height: 5vh;
+  align-content: center;
+  text-align: center;
+}
+.navbarclass * {
+  background-color: rgb(201,76,48);
+}
+
+.main_wrapper {
+  height: 80vh;
+}
+
+/* .footer_wrapper {
+  height: 5vh;
+} */
+
+body {
+  background-color: rgb(211, 153, 4);
+  /* font-family: 'Press Start 2P', Verdana, sans-serif; */
+  color: rgb(255,255,255);
+  font: 'OCR A Std, monospace';
+}
+
+div{
+  background-color: rgb(211, 153, 4);
+}
+
+h1, h2, h3{
+  color: rgb(224, 223, 223);
+  text-align: center;
+  /* text-decoration-line: overline; */
+  letter-spacing: 5px;
+  font: 'OCR A Std, monospace';
+}
+
+.card{
+  background-color: rgb(201,76,48);
+  align-content: center;
+}
+
+.gameHeader{
+  text-size-adjust: 340px;
+  background-color: rgb(201,76,48);
+}
+
+.gameBody{
+  background-color: rgb(201,76,48);
+}
+
+p{
+  color: rgb(224, 223, 223);
+  font: 'OCR A Std, monospace';
+}
+
+.alert {
+  max-width: 70rem;
+}

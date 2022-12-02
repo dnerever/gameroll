@@ -1,0 +1,11 @@
+-- INSERT INTO game_genres (genre_id, name) VALUES
+-- (4, 'Fighting'),
+-- (5, 'Shooter'),
+-- (7, 'Music'),
+-- (8, 'Platform'),
+-- (9, 'Puzzle'),
+-- (10, 'Racing'),
+-- (11, 'Real Time Strategy (RTS)'),
+-- (12, 'Role-playing (RPG)'),
+-- (13, 'Simulator'),
+-- (14, 'Sport');

@@ -4,8 +4,44 @@
 
 <main>
   <div class="container">
-    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-    <h1>Login</h1>
+    <div class="py-4 w-100">
+      <div class="card mb-3" >
+        <div class="card-header gameHeader" id="gameHeader">
+          <h4><%= results.data[0].name %></h4>
+        </div>
+        <img src="<%= results.data[0].screenshots[0].url %>" class="img-fluid rounded mx-auto" alt="Screenshot of the game" width="300">
+        <div class="card-body gameBody">
+          <!-- Game description here: -->
+          <h5>Game info</h5>
+          <% if(results.data[0].genres != null){ %>
+            <p>Genre: <%= results.data[0].genres[0].name %></p>
+          <% }%>
+          <p>Summary: <%= results.data[0].summary %></p>
+          <% if(results.data[0].release_dates != null){ %>
+          <p>Release Date: <%= results.data[0].release_dates[0].human %></p>
+          <% }%>
+          <% if(results.data[0].platforms != null){ %>
+            <p>Platform: <%= results.data[0].platforms[0].name %></p>
+          <% }%>
+          <% if(results.data[0].url != null){ %>
+            <p>
+              View on IGDB: <a href="<%=results.data[0].url %>" type="link" target="_blank" rel="noopener noreferrer">IGDB</a>
+            </p>
+          <% }%>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <form action="/saveGame" method="POST">
+          <button type="submit" class="btn btn-danger btn-lg">Save Game</button>
+          <input type="hidden" name="game_name" value="<%= results.data[0].name %>">
+          <input type="hidden" name="genre" value="<%= results.data[0].genre %>">
+          <input type="hidden" name="game_id" value="<%= results.data[0].id %>">
+          <input type="hidden" name="url" value="<%= results.data[0].url %>">
+        </form>
+        <form action="/home" method="GET"><button type="submit" class="btn btn-primary btn-lg">New Game >>></button></form>
+        
+      </div>
+    </div>
   </div>
 </main>
 
