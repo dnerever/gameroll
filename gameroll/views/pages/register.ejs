@@ -1,43 +1,35 @@
-<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
 
 <main>
+  <br>
+  <br>
   <div class="container">
       <form action = "/register" method = "POST">
-    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-     <!-- Section: Design Block -->
-<section class=" text-center text-lg-start">
-    <div class="card mb-3">
-      <div class="row g-0 d-flex align-items-center">
-        <div class="col-lg-8">
-          <div class="card-body py-5 px-md-5">
-  
-            <form>
-              <!-- Email input -->
-              <div class="form-outline mb-4">
-                <label class="form-label" for="form2Example1">Email</label>
-                <input type="email" id="form2Example1" class="form-control" placeholder="Email" name = "email"/>
-              </div>
-
-  
-             <!--Password input -->
-            <div class="form-outline mb-4">
-                <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
-            </div>
-              <!-- Submit button-->
-              <button type="submit" class="btn btn-primary">Register</button>
-                <!-- Don't have account?-->
-              <p>Have an account? <a href = "/login">Login</a></p>
-            </form>
-  
+          <!-- Section: Design Block -->
+          <h2>Register</h2>  
+            <!-- Email input -->
+          <div class="form-outline mb-4">
+              <label class="form-label" for="form2Example1">Email</label>
+              <input type="text" id="form2Example1" class="form-control" placeholder="Email" name = "email"/>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Section: Design Block -->
-    </form>
-  
+
+
+          <!--Password input -->
+          <div class="form-outline mb-4">
+              <label for="inputPassword">Password</label>
+              <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+          </div>
+          
+          <!-- Submit button-->
+          <button type="submit" class="btn btn-primary">Register</button>
+          <br>
+          <br>
+          <!-- Don't have account?-->
+          <p>Already have an account? <a href = "/login">Login</a></p>
+        
+      </form>
   </div>
 </main>
 
