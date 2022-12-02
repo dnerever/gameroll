@@ -1,0 +1,33 @@
+<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
+<div class="col"><%- include ('../partials/message') %></div>
+
+<main class="main_wrapper">
+    <br>
+    <br>
+    <div class="container">
+        <form action="/login" method="POST">
+
+            <h2>Login</h2>  
+
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+                <label class="form-label" for="form2Example1">Email</label>
+                <input type="text" name="email" id="form2Example1" placeholder="Email" class="form-control" />
+            </div>
+            
+            <!--Password input -->
+          <div class="form-outline mb-4">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+        </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+            <br>
+            <p>Don't have an account? <a href="/register">Register</a></p>
+
+        </form>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %>
